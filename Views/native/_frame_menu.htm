@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK href="style.css" type=text/css rel=stylesheet>
+<title><?=$site_title?> - <?=$page_title?></title>
+</head>
+<body>
+<table width="100%"  border="0" cellpadding="2" cellspacing="1" class=border>
+<tr class="tdbg">
+<td><div align="center"><a><?=$groupname?><?=$username?></a></div></td>
+</tr>
+<tr >
+	<td>
+<div align=center style="height:20">
+		</div>
+</td>
+</td>
+</tr>
+<? foreach( $roots as $root) {?>
+		<!-- <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="title"> -->
+		<tr class="title"  >
+		<td><div align="left">
+		<IMG style="CURSOR: hand" SRC="images/item.gif" WIDTH="9" HEIGHT="9" BORDER="0" ALT=""> <b><A style="CURSOR: hand" 
+			onclick="if(item<?=$root['menuid']?>.style.display=='none') item<?=$root['menuid']?>.style.display=''; else item<?=$root['menuid']?>.style.display='none';" title="点击展开"><?=$root['title']?></A></b></div></td>
+		</tr>
+		<tbody id="item<?=$root['menuid']?>" <?if ($root['showflag']==0){?>style="display:none"<?}?>>
+		<? if ($root['subs'] ) foreach($root['subs'] as $rs){?>
+		<tr>
+		<td align="center"><a href="<?=$rs['url']?>" target="frame_main"><?=$rs['title']?></a></td>
+		</tr>
+		<?}?>
+		</tbody>
+		<tr >
+		<td height=3 align="center"></td>
+		</tr>
+<?}?>
+		<tr >
+		<td height=3 align="center">
+<div align=center style="height:50">
+		</div>
+</td>
+		</tr>
+<tr class=tdbg>
+		<td align="center"><a href="" target="rbottom"> </a>　</td>
+		</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" >
+
+</table>
+</body>
+</html>

@@ -1,0 +1,132 @@
+
+<script language="JavaScript">
+//--!!参数表开始
+
+direction="<%$param.templateparam%>";
+sizew="100%";
+sizeh="100%";
+bkcolor="<%$param.bgcolor%>"
+bkimg="<%$param.bgmediapath%>"
+fsize="<%$param.fontsize%>px"
+fcolor="<%$param.fontcolor%>"
+speed='<%$param.speed%>';
+//--!!参数表结束
+var marqueeContent=new Array();
+//--!!数据表开始 $$$--marqueeContent--$$$
+var content = "<%$param.medialist%>";
+marqueeContent = content.split('|');
+//--!!数据表结束
+</script>
+<html><head> 
+<meta http-equiv="Context-Type" content="text/html; charset=utf-8">    
+
+
+<script language="JavaScript">
+function InitTableX()
+{
+
+	var inhtml=' <TR valign="top"> ';
+	for(var i=0;i<marqueeContent.length;i=i+2)
+	{
+		
+		var img=marqueeContent[i];
+		var str=marqueeContent[i+1];
+		if(img!="")
+		{img='<IMG src="'+img+'" onload="ResizeImg(this);" align="top" style="float:left">';
+		img='<TD valign="top"> '+img+'</td>';	}
+		str='<TD valign="top"> '+str+'</td>';
+		
+		inhtml=inhtml+img+str;	
+	}
+	inhtml='<TABLE id=table border="0" align="top" cellspacing="0" cellpadding="0" > '+inhtml+"</tr></table></marquee>";
+	inhtml='<marquee  id=marquee scrollamount="'+speed+ '" height="'+sizeh+'" width="100%" style="overflow:hidden;">'+inhtml;
+
+	document.write(inhtml);
+	
+	return ;
+}
+
+
+function InitTableY()
+{
+
+	var inhtml='';
+	for(var i=0;i<marqueeContent.length;i=i+2)
+	{
+		
+		var img=marqueeContent[i];
+		var str=marqueeContent[i+1];
+		if(img!="")
+		{		img='<IMG src="'+img+'" onload="ResizeImg(this);" align="top" style="float:left">';	
+		inhtml=inhtml+'<tr><td  valign="top">'+img+str+"</td></tr>";}
+		else{
+		inhtml=inhtml+'<tr><td  valign="top">'+str+"</td></tr>";}
+		inhtml=inhtml+" <tr ><td><br></td></tr>";
+	}
+	inhtml='<TABLE id=table border="0" align="top" cellspacing="0" cellpadding="0""> '+inhtml+"</table></marquee>";
+	inhtml='<marquee  id=marquee scrollamount="'+speed+ '" width="'+sizew+'" height="100%">'+inhtml;
+		
+	document.write(inhtml);
+	
+	return ;
+}
+function InitTable()
+{
+
+  if(direction=="up"||direction=="down")
+	{
+		InitTableY();
+	}else
+	{
+
+		InitTableX()
+	}	
+}
+function OnBodyLoad()
+{
+
+	window.document.body.style.backgroundColor=bkcolor;
+	window.document.body.style.backgroundImage="url("+bkimg+")";
+	table.style.fontSize=fsize;
+	table.style.color=fcolor;
+	marquee.direction=direction;
+}
+function pxToInt(str)
+{
+	var sz=str.replace(/px/g,"");
+	return parseInt(sz);
+}
+function ResizeImg(obj)
+{
+	var maxh=pxToInt(sizeh);
+	var maxw=pxToInt(sizew);
+
+	if(direction=="up"||direction=="down")
+	{
+		if(obj.offsetWidth>maxw)
+		{
+			obj.style.height=obj.offsetHeight*maxw/obj.offsetWidth;
+			obj.style.width=maxw;
+			
+		}
+	}else
+	{
+		
+		if(obj.offsetHeight>maxh)
+		{
+
+			obj.style.width=(obj.offsetWidth*maxh/obj.offsetHeight)+"px";
+			obj.style.height=maxh+"px";
+		}
+	}
+}	
+		
+InitTable();
+ </script> 
+<body onLoad="OnBodyLoad()" style="overflow:hidden;background-repeat:repeat;text-decoration:none; margin:0 0 0 0"> 
+
+
+
+ 
+</body>
+</html>

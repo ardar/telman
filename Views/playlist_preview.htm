@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>节目包预览 : <%$rs.playlistname%></title>
+<script type="text/javascript" src="ui/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+function Zone(objname,playlist,type)
+{
+	this.obj=objname;
+	this.playlist=playlist.split('|');
+	this.type=type;
+	this.nowIndex=0;
+}
+var ZoneList = new Array;
+function PlayAll()
+{
+	for(var i=0;i<ZoneList.length;i++)
+	{
+		var zone=ZoneList[i];
+		
+		if(zone.type=="video")
+		{
+			var obj=window.document.getElementById(zone.obj);
+			obj.URL=zone.playlist[zone.nowIndex];
+			obj.controls.play();
+			d=setInterval(function shwotimer()   
+			{   
+				var obj=window.document.getElementById(zone.obj);
+				if(obj.playState==1)
+				{
+					if(zone.nowIndex>=zone.playlist.length)
+					{
+						zone.nowIndex=0;
+					}
+					else 
+					zone.nowIndex ++;
+					obj.URL=zone.playlist[zone.nowIndex];
+					obj.controls.play();
+				}
+			},1000);			
+		}
+	}
+}
+
+AddVideoList=function(zoneid,playlist)
+{
+	var id="wmp_"+zoneid;
+	ZoneList[ZoneList.length]=new Zone(id,playlist,"video");
+}
+<%foreach $zones as $zone%>
+<%if $zone['type']=='video'%>
+AddVideoList("<%$zone['zoneid']%>","<%$zone['medialist']%>");
+<%/if%>
+<%/foreach%>
+</script>
+</head>
+<body onload="PlayAll()">
+<div id="con" style="border: solid 1px;position:absolute; width:<%$rs.width%>px; height:<%$rs.height%>px; background-color:<%$rs.bgcolor%>; background-image:<%$rs.bgmediapath%>">
+<%foreach $zones as $zone%>
+<%if $zone['type']=='video'%>
+<div id="div_wmp_<%$zone['zoneid']%>" style="width:<%$zone['width']%>%;height:<%$zone['height']%>%;left:<%$zone['left']%>%;top:<%$zone['top']%>%; position:absolute; background-color:<%$zone['bgcolor']%>; background-image:url('<%$zone['bgmediapath']%>')" >
+<object id="wmp_<%$zone['zoneid']%>" width='100%' height='100%' border='0' type='application/x-oleobject' classid='CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6'>
+<param name='volume' value='100'>
+<param name='uiMode' value='None'>
+<param name='Enabled' value='-1' /> 
+<param name='fullScreen' value='0'>
+<param name='enableContextMenu' value='0'>
+<PARAM NAME='stretchToFit' VALUE='1'>
+<param name='ShowControls' value='-1'>
+<param name='ShowDisplay' value='0'>
+<param name='ShowStatusBar' value='0'>
+<param name='ShowStatusBar' value='0'>
+<param name='EnableFullScreenControls' value='-1'>
+<param name='ShowAudioControls' value='-1'>
+<param name='WindowlessVideo' value='-1'>
+<param name='AllowChangeDisplaySize' value='1'>
+<param name='AutoSize' value='1'>
+</object>
+</div>
+<%elseif $zone['type']=='text'%>
+<div id="div_<%$zone['zoneid']%>" style="width:<%$zone['width']%>%;height:<%$zone['height']%>%;left:<%$zone['left']%>%;top:<%$zone['top']%>%; position:absolute;">
+<iframe  width='100%' height='100%' scrolling='no' id="frame_<%$zone['zoneid']%>" frameborder='0' src="?controller=Playlist&action=previewtext&zoneid=<%$zone['zoneid']%>"></iframe>
+</div>
+<%else%>
+<%/if%>
+<%/foreach%>
+</div>
+</body>
+</html>

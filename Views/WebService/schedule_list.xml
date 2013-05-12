@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+<%foreach $list as $key=>$rs%>
+<client id="<%$rs.mac%>" group="<%$rs.name%>" Schedule="<%$rs.filepath%>" ScheduleId="<%$rs.scheduleid%>"/>
+<%/foreach%>
+</root>

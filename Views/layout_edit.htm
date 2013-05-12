@@ -1,0 +1,241 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="layout_edit.css" rel="stylesheet" type="text/css">
+<link rel="StyleSheet" href="dragzone.css" type="text/css" />
+<SCRIPT language=javascript src="ui/common.js"/>
+</SCRIPT>
+<SCRIPT language=javascript src="ui/layout_edit.js"/>
+</SCRIPT>
+<script type="text/javascript" src="ui/dragzone.js">	
+</script>
+<style type="text/css">
+.align_btn
+{
+	cursor: hand; 
+	padding:0px; 
+	margin:0px; 
+	width:25px; 
+	height:25px;
+	background-image:url(images/align_btns.png); 
+}
+</style>
+</head>
+
+
+<body onLoad="InitPage()">   
+
+<table width='100%'  border=0 cellpadding=2 cellspacing=1 bgcolor='#e7e7e7' class='data_form'><form id=myform action='' method='post' onSubmit="if(!isclicksubmit)return false;"  enctype='multipart/form-data'>
+<TR class=tabletitle ><TD colspan=4><B><%$page_title%></B></TD></TR>
+
+<tbody style="">
+  <tr>
+    <td colspan="4" class=valuetd style="background-color: #D8DDEB">
+      <span style="font-weight:bold"><%if $rs.playlistid==0%>模板名称
+        <%else%>
+        布局名称
+        <%/if%>:
+    	<input name='name' type='text' <%if $rs.playlistid>0%>readonly=true<%/if%> class=inputbox id='name' value='<%$rs.name%>' size="23"  >
+        
+        </span>
+        <span style="margin-left:30px;font-weight:bold">
+        宽高比:<select  class=inputbox name='screenratio' id='screenratio' onChange="SetScreenRatio(this.value);">
+          <%foreach $ratios as $r%>
+          <option value='<%$r.syscode%>' >
+            <%$r.syscodename%>
+            </option>
+          <%/foreach%>
+          </select>
+        <input type="hidden" id="screenratio_ori" value="<%$rs.screenratio%>">
+        </span>
+        <span style="margin-left:30px;font-weight:bold;display:<%if $rs.playlistid>0%>none<%/if%>">
+        背景图:<input name="bgmedia" class=inputbox readonly='true' size=10 type="text" id="bgmedia" value='<%$rs.bgmedianame%>' onChange="SetScreenProperty('bgmedia',this.value);"/>
+        <input type="image" src="./images/image.png" onClick="var retval=SelMediaDialog(bgmediaid.id,bgmedia.id,bgmediapath.id,bgmediaid.value,'image');SetScreenProperty('bgmedia',retval);return false;"/>
+        <input type="image" src="./images/erase.png"
+    onClick="bgmediaid.value=bgmediapath.value=bgmedia.value='';SetScreenProperty('bgmedia','');return false;" alt="清除背景图"/>
+        <input type="hidden" id="bgmediaid" name="bgmediaid" value='<%$rs.bgmediaid%>'>
+        <input type="hidden" id="bgmediapath" name="bgmediapath" value='<%$rs.bgmediapath%>'>
+    </span>
+        <span style="margin-left:30px;font-weight:bold;display:<%if $rs.playlistid>0%>none<%/if%>">
+        背景色:<input name="bgcolor" class=inputbox type="text" id="bgcolor" value='<%$rs.bgcolor%>' size="10" onChange="SetScreenProperty('bgcolor',this.value);"/ style="background-color:<%$rs.bgcolor%>">
+        <input type="image" id='selcolor' src="./images/fbcolor.png" onClick="SelColorDialog(bgcolor.id);SetScreenProperty('bgcolor',bgcolor.value);return false;"/>
+        <input type="image" src="./images/erase.png"
+    onClick="bgcolor.value='';SetScreenProperty('bgcolor','');bgcolor.style.backgroundColor='';return false;" alt="清除背景色"/>
+    </span>
+        </td>
+  </tr>
+</tbody>
+<tr>
+  <td class=valuetd valign="top" colspan="4" style="padding:0px">
+  <table width=100%  ><tr>
+  <td class=fieldtd valign="top" style="padding:0px">
+  
+  <table id='zone_listtable' width='100%'  border=0 cellpadding=0 cellspacing=1 bgcolor='#e7e7e7' class='border'>
+    <TR class=tdbg >
+      <TD ><B>区域列表</B></TD>
+    </TR>
+    <tr >
+      <td>
+      <ul id=zindexlist>
+      </ul></td>
+    </tr>
+  </table>
+  <br>
+  <table id='zone_detail' style="display:" width='100%'  border=0 cellpadding=0 cellspacing=1 bgcolor='#e7e7e7' class='border'>
+<TR class=tdbg >
+  <TD colspan=3><B><font id=></font>设置区域属性</B></TD></TR>
+<tr >
+<td colspan="3" class=fieldtd>名　称:
+  <input name="zonename" class=inputbox type="text" id="zonename" value='' size="20" onChange="SetZoneProperty(zoneid.value,'name',this.value);"/>
+  <input type="hidden" class=inputbox name="zoneid" id="zoneid" value=""></td>
+</tr>
+<tr >
+<td class=fieldtd colspan="3">左边距:
+  <input type="text" class=inputbox name="zoneleft" id="zoneleft" size="3" maxlength="3" value=''  onChange="SetZoneProperty(zoneid.value, 'left', this.value);"/>
+  %</td>
+  </tr>
+  <tr>
+<td class=fieldtd colspan="3">上边距:
+  <input type="text" class=inputbox name="zonetop" id="zonetop" size="3" maxlength="3" value='' onChange="SetZoneProperty(zoneid.value, 'top', this.value);"/>
+  %</td>
+</tr>
+<tr >
+<td class=fieldtd colspan="3">宽　度:
+  <input type="text" class=inputbox name="zonewidth" id="zonewidth" size="3" maxlength="3" value='' onChange="SetZoneProperty(zoneid.value, 'width', this.value);"/>
+  %</td></tr><tr>
+<td class=fieldtd colspan="3">高　度:
+  <input type="text" class=inputbox name="zoneheight" id="zoneheight" size="3" maxlength="3" value='' onChange="SetZoneProperty(zoneid.value, 'height', this.value);"/>
+  %</td>
+</tr>
+<tr class=tdbg >
+  <td colspan="3"><strong>区域类型:</strong>
+    <select name='zonetype' class=inputbox id='zonetype' onChange="SetZoneProperty(zoneid.value,'type',this.value);">
+      <option value='video'>视频播放</option>
+      <option value='text' >图文切换</option>
+      <option value='html' >HTML页面</option>
+    </select>  </td>
+  </tr>
+<%if $rs.playlistid>0%>
+<input type="hidden" name="zonetype" value='' id='zonetype' onChange="SetZoneProperty(zoneid.value,'type',this.value);">
+<input type="hidden" name="zonebgcolor" value='' id='zonebgcolor' onChange="SetZoneProperty(zoneid.value,'bgcolor',this.value);">
+<input type="hidden" name="zonebgmedia" id="zonebgmedia" value='' onChange="SetZoneProperty(zoneid.value,'bgmedia',this.value);">
+ <input type="hidden" id="zonebgmediaid" name="zonebgmediaid" value=''>
+ <input type="hidden" id="zonebgmediapath" name="zonebgmediapath" value=''>
+<tbody id=video_tr style="display:none">
+ 
+</tbody>
+<tbody id=text_tr style="display:none">
+
+</tbody>
+<tbody id=html_tr style="display:none">
+
+</tbody>
+<%else%>
+
+
+<tr >
+  <td class=fieldtd colspan="3">背景色:
+    <input name="zonebgcolor" class=inputbox type="text" id="zonebgcolor" value='' size="10" onChange="SetZoneProperty(zoneid.value,'bgcolor',this.value);"/>
+    <input type="image" src="./images/fbcolor.png" onClick="SelColorDialog(zonebgcolor.id);SetZoneProperty(zoneid.value,'bgcolor',zonebgcolor.value);return false;"/> <input type="image" src="./images/erase.png"
+    onClick="zonebgcolor.value='';SetZoneProperty(zoneid.value,'bgcolor','');zonebgcolor.style.backgroundColor='';return false;"  alt="清除背景色"/></td>
+</tr>
+<tr >
+  <td class=fieldtd colspan="3">背景图:
+     <input name="zonebgmedia" type="text" class=inputbox id="zonebgmedia" onChange="SetZoneProperty(zoneid.value,'bgmedia',this.value);" value='' size="10" readonly='true'/>
+    
+    <input type="image" src="./images/image.png" onClick="var retval=SelMediaDialog(zonebgmediaid.id,zonebgmedia.id,zonebgmediapath.id,zonebgmediaid.value,'image');SetZoneProperty(zoneid.value,'bgmedia',retval);return false;"/>
+    <input type="image" src="./images/erase.png"
+    onClick="zonebgmediaid.value=zonebgmediapath.value=zonebgmedia.value='';SetZoneProperty(zoneid.value,'bgmedia','');return false;"  alt="清除背景图"/><input type="hidden" id="zonebgmediaid" name="zonebgmediaid" value=''><input type="hidden" id="zonebgmediapath" name="zonebgmediapath" value=''>
+    </td>
+  </tr>
+<tbody id=video_tr style="display:none">
+ 
+</tbody>
+<tbody id=text_tr style="display:none">
+
+</tbody>
+<tbody id=html_tr style="display:none">
+
+</tbody>
+<%/if%>
+  </table>
+  </td>
+  <td class=valuetd valign=top >
+
+<div style="margin-bottom:8px; vertical-align:middle; line-height:250%">
+<input type="hidden" name="layout" id="layout" value="<%$rs.layout%>">
+<a  style="border: solid 1px #666; padding:2px; background-image:url(images/bg_input_btn.png); margin:1px; cursor:hand;" name='load' onClick="InitPage();return false;" id="load"> <img src="images/refresh.png">重置 </a>
+<a name='createzone'  style="border: solid 1px #666; padding:2px; background-image:url(images/bg_input_btn.png); margin:1px; cursor:hand;" onClick="var newid=AddNewZone();SelectZone(newid);"> <img src="images/new.png">添加 </a>
+<a name='delzone' style="border: solid 1px #666; padding:2px; background-image:url(images/bg_input_btn.png); margin:1px; cursor:hand;" onClick="if(zoneid.value!='') DeleteSelZone(zoneid.value);" id="delzone"> <img src="images/delete.png">删除 </a>
+ <%foreach $ratios as $r%>
+<a style="border: solid 1px #666; padding:2px; background-image:url(images/bg_input_btn.png); margin:1px; cursor:hand;" onClick="SetZoneRatio(zoneid.value,'<%$r.syscode%>');" title="设置区域宽高比为<%$r.syscode%>"> <img src="images/screen.png" border=0><%$r.syscode%> </a>
+ <%/foreach%>
+</div>
+<div style="padding-bottom:3px; vertical-align:middle; line-height:250%">
+
+<a class="align_btn" style="background-position: -24px 0px;" onClick="javascript:FullScreen.Aglin('left',null)" title="左对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -0px 0px;" onClick="javascript:FullScreen.Aglin('right',null)" title="右对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -48px 0px;" onClick="javascript:FullScreen.Aglin('top',null)" title="上对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -72px 0px;" onClick="javascript:FullScreen.Aglin('bottom',null)" title="下对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -96px 0px;" onClick="javascript:FullScreen.Aglin('ycenter',null)" title="横向中线对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -120px 0px;" onClick="javascript:FullScreen.Aglin('xcenter',null)" title="纵向中线对齐" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -144px 0px;" onClick="javascript:FullScreen.Aglin('width',null)" title="平分宽度" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -168px 0px;" onClick="javascript:FullScreen.Aglin('height',null)" title="平分高度" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -192px 0px;" onClick="javascript:FullScreen.Fill('width',null)" title="填满宽度" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -216px 0px;" onClick="javascript:FullScreen.Fill('height',null)" title="填满高度" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -240px 0px;" onClick="javascript:FullScreen.Fill('rect',null)" title="填满区域" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -264px 0px;" onClick="javascript:FullScreen.Side('left',null)" title="横向左侧紧贴" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -288px 0px;" onClick="javascript:FullScreen.Side('right',null)" title="横向右侧紧贴" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -312px 0px;" onClick="javascript:FullScreen.Side('top',null)" title="纵向顶部紧贴" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+<a class="align_btn" style="background-position: -336px 0px;" onClick="javascript:FullScreen.Side('bottom',null)" title="纵向底部紧贴" onMouseDown="this.style.border=' inset 1px'" onMouseUp="this.style.border='';" onMouseOut="this.style.border=''"></a>
+ <label style="margin-left:30px; color: dark blue; font-weight:bold;">
+<input type="checkbox" value=1 name="canx" onClick="if(this.checked){var option={canX:false};FullScreen.SetOption(option);}else {var option={canX:true};FullScreen.SetOption(option);}">
+禁止区域重叠</label>
+</div>
+
+<div id="container" class="container" style=" position:relative; height:450px;width:450px;" onselectstart="return false;">
+<script type="text/javascript">
+	function ZoneCallBack(id,top,left,w,h)
+	{
+		try
+		{
+		var zone = FindZoneById(id);
+		if(!zone || zone['type']=='deleted')
+		{
+			return;
+		}
+		zone['left'] = left;
+		zone['top'] = top;
+		zone['width'] = w;
+		zone['height'] = h;
+		OnZoneSelected(id);
+		}
+		catch(e)
+		{
+			alert(e.message);
+		}
+	}
+	FullScreen=new ZoneContiner("FullScreen","container",450,450,true,'#ccc','', ZoneCallBack);
+</script>
+</div>
+
+  </td></tr></table>
+</td>
+</tr>
+<tr style="display:none">
+  <td class=fieldtd>属性</td>
+  <td width=40% valign="top" >
+  
+  
+  </td>
+  <td colspan="2" valign="top" ></td>
+  </tr>
+<tr ><td height=30 class=fieldtd style="background-color:#eee"> </td><td class=valuetd colspan="3" style="background-color:#eee"><input name='id' type='hidden' id='id' value='<%$rs.id%>' ><input name='controller' type='hidden' id='controller' value='<%$controller%>' ><input name='action' type='hidden' id='action' value='<%$action%>' ><input name='referer' type='hidden' id='referer' value='<%$referer%>' > <input id=submitbtn type='submit' tabindex="0" class='button' value='提交' onClick="isclicksubmit=true;ParseZones();this.disabled='true';this.form.submit()">
+			<input name='back' type='button' class='button' value='取消' onClick="window.history.go(-1)"></td>
+  </tr>
+</form></table>
+
+</BODY>
+</HTML>

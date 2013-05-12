@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><?=$site_title?> - <?=$page_title?></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+</head>
+
+<body>
+<p>&nbsp;</p>
+<div align="center" style="vertical-align:middle; height:600">
+<table width="37%"  border="0" align="center" valign=center cellpadding="2" cellspacing="1" class="border">
+  <form method="post" action="">
+  <tr>
+    <td width="27%"><div align="right">用户名</div></td>
+    <td width="73%"><input name="username" type="text" class="border" id="username"></td>
+  </tr>
+  <tr>
+    <td><div align="right">密码</div></td>
+    <td><input name="password" type="password" class="border" id="password"></td>
+  </tr>
+    <tr>
+    <td><div align="right">验证码</div></td>
+    <td><input name="confirmcode" type="text" class="border" id=logincode"> <img src="<?=$confirmcode?>"></td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td><input name="Submit" type="submit" class="border" value="登陆">
+    <input name="controller" type="hidden" id="module" value="Account"> 
+    <input name="action" type="hidden" id="proc" value="dologin"> 
+    <input name="return_url" type="hidden" id="return_url" value="<?=$return_url?>"> 
+    <a href="<?=urlhelper("proc","Account","register")?>" target="_top"><span class="style1">注册</span></a></td>
+  </tr></form>
+</table>
+</div>
+</body>
+</html>

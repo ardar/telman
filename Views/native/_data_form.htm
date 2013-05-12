@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><?=$site_title?> - <?=$page_title?></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<SCRIPT language=javascript>
+function unselectall(theform)
+{
+    if(theform.chkAll.checked){
+			theform.chkAll.checked = theform.chkAll.checked&0;
+    } 	
+}
+
+function CheckAll(form)
+{
+  for (var i=0;i<form.elements.length;i++)
+    {
+    var e = form.elements[i];
+    if (e.Name != "chkAll")
+       e.checked = form.chkAll.checked;
+    }
+}
+
+function GetFileNameFromPath(path)
+{
+	var startpos = path.lastIndexOf("\\");
+	if(startpos>0)
+	{
+		return path.substring(startpos+1, path.length);
+	}
+	else
+	{
+		startpos = path.lastIndexOf("/");
+		return path.substring(startpos+1, path.length);
+	}
+}
+</SCRIPT>
+</head>
+
+<body>
+
+<BR>
+<?=$form->BindParam('class',"border")?>
+</BODY>
+</HTML>

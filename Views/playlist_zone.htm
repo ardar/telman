@@ -1,0 +1,307 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js"/>
+</SCRIPT>
+<script type='text/javascript'>
+function SelectItemMedia(itemid)
+{
+	var imgid = "textimg_"+itemid;
+	var fieldId = "mediaid_"+itemid;
+	var btnid = "delbtn_"+itemid;
+	var val = showModalDialog("index.php?controller=Media&action=selindex&mediatype=image&return_field="+fieldId, "从媒体库中选择", "dialogWidth:800px; dialogHeight:600px; status:0; help:0");
+	if(val)
+	{
+		var arr = val.split('*');
+		var mediaid = arr[0];
+		var medianame = arr[1];
+		var mediapath = arr[2];
+		var item = window.document.getElementById(fieldId);
+		if(item!=null)
+		{
+			item.value = mediaid;
+		}
+		window.document.getElementById(imgid).src = mediapath;
+		window.document.getElementById(btnid).style.display = '';
+		SetDirty();
+	}
+}
+function DeleteItemMedia(itemid)
+{
+	var imgid = "textimg_"+itemid;
+	var fieldId = "mediaid_"+itemid;
+	var btnid = "delbtn_"+itemid;
+	var item = window.document.getElementById(fieldId);
+	if(item!=null)
+	{
+		item.value = '';
+	}
+	window.document.getElementById(imgid).src = "images/nopic.png";
+	window.document.getElementById(btnid).style.display = 'none';
+	SetDirty();
+}
+
+function AddNullItem()
+{
+	window.document.getElementById('mediaid').value = '-99';
+	window.document.forms['addtozone_form'].submit();
+}
+
+var ListIsDirty = false;
+function SetDirty()
+{
+	var item = window.document.getElementById("dirty_note");
+	item.style.display = "";
+	ListIsDirty = true;
+}
+function CheckDirty()
+{
+	if(ListIsDirty)
+	{
+		if(confirm("列表内容已修改, 是否放弃修改并进行其他操作"))
+		{
+			return true;
+			//window.document.forms['dataform'].submit();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return !ListIsDirty;
+}
+</script>
+</head>
+
+<body style="margin:3px;">
+<form id='zoneform' name='zoneform' action='' method='post'  enctype='multipart/form-data'>
+<table width="100%" border="0" cellpadding="5" cellspacing="0"><tr><td>
+    <span style=" margin-left:4px"><%$zone.zonename%> (<%$zone.totalduration%>)</span>
+  </td><td style="text-align:right; padding-right:20px;">
+    <span>
+    <%if $canedit%>
+<input name='zoneid' type='hidden' id='zoneid' value='<%$zone.zoneid%>' >
+    <input name='controller' type='hidden' id='controller' value='PlaylistItem' >
+    <input name='action' type='hidden' id='action' value='doeditzone' >
+    <%if $zone.type=='text'%>
+    <input type="button" value="添加字幕项" class=button onClick="AddNullItem();">
+	<%/if%>
+<input name='Submit' type='submit' class='button' value='提交更改' onClick="this.form.submit();this.disabled=true;this.value='正在提交...'">
+                
+     <input name="重置" type="reset" class=button value="重新填写">    
+     <%/if%>
+     </span>
+    </TD>
+    </tr>
+    </table>
+    
+<table width='100%'  border=0 cellpadding=3 cellspacing=2 class='' >
+<tbody >
+
+<tr>
+<%if $zone.type<>'html'%>
+<td valign="top">
+    <table width='100%'  border=0 cellpadding=4 cellspacing=1 bgcolor='#cccccc' class=''>
+    <%if $zone.type<>'html'%>
+    <tr class=tdbg>
+      <td colspan="2">
+      <table width="100%" border="0" cellpadding="2" cellspacing="0"><tr><td>
+        <div style="width:100%; margin-left:4px">内容列表</div>
+        </TD>
+        <TD style="text-align:right; padding-right:20px;">
+        <%if $zone.type=='text'%>
+                    <span id="dirty_note" style="display:none; color:red">列表内容已修改, 进行其他操作前请先提交修改! </span>
+                    <%/if%>
+    </TD></tr></table>
+      </td>
+      </tr>
+    <%/if%>
+    </table>
+    
+    <%if $zone.type=='video'%>
+    <table width='100%' height='100%' border=0 cellpadding=3 cellspacing=1 bgcolor='#cccccc' >
+    <tr bgcolor="#efefef">
+      <td width='30'><div align='center'>顺序</div></td>
+    <td width='60'><div align='center'>预览</div></td>
+    <td width='40%'><div align='center'>媒体名称</div></td>
+    <td width=''><div align='center'>播放时间</div></td>
+    <td width=''><div align='center'>大小</div></td>
+    <td width='65'><div align='center'>操作</div></td>
+    </tr>
+    <%foreach $list as $rs%>
+    <tr bgcolor="#ffffff">
+      <td ><div align='center'><%$rs.playorder%></div></td>
+    <td><div align='left'><%if $rs.preview<>''%><img src='<%$rs.preview%>' width=60><%/if%></div></td>
+    <td><div align='left'><%$rs.medianame%></div></td>
+    <td><div align='center'><%$rs.duration%></div></td>
+    <td><div align='center'><%$rs.filesize%></div></td>
+    <td><div align='center'>
+    <%if $canedit%>
+    <a href="index.php?controller=PlaylistItem&action=moveup&playlistitemid=<%$rs.playlistitemid%>" ><img title="上移" src="images/up.png" ></a> <a href="index.php?controller=PlaylistItem&action=movedown&playlistitemid=<%$rs.playlistitemid%>"><img title="下移" src="images/down.png" ></a> <a href="index.php?controller=PlaylistItem&action=delete&playlistitemid=<%$rs.playlistitemid%>"><img title="删除" src="images/delete.png" ></a>
+    <%/if%>
+    
+    </div></td>
+    </tr>
+    <%foreachelse%>
+    <TR bgcolor=#ffffff><TD colspan=6 align=center height=50>该区域还没有加入媒体..</TD></TR>
+    <%/foreach%>
+    <TR bgcolor=#ffffff><TD colspan=6></TD></TR>
+    </table>
+    <%elseif $zone.type=='text'%>
+    <table width='100%' height='100%' border=0 cellpadding=3 cellspacing=1 bgcolor='#cccccc' >
+    <tr  bgcolor="#efefef">
+      <td width='30'><div align='center'>顺序</div></td>
+    <td width=''><div align='center'>文字配图</div></td>
+    <td width='50%'><div align='center'>滚动文字</div></td>
+    <td width='65'><div align='center'>操作</div></td>
+    </tr>
+    <%foreach $list as $rs%>
+    <tr bgcolor="#ffffff">
+      <td width=''><div align='center'><%$rs.playorder%></div></td>
+    <td width=''><div align='center'><img width=50 onload="if(this.width>50)this.width=50;if(this.height>50)this.height=50;" id="textimg_<%$rs.playlistitemid%>" src="<%if $rs.savefilepath<>''%><%$rs.savefilepath%><%else%>images/nopic.png<%/if%>" style="cursor:hand" <%if $canedit%> onClick="SelectItemMedia(<%$rs.playlistitemid%>)" title="点击重新选择图片"<%/if%> >
+    <%if $canedit%>
+    <img title="点击删除图片" style="cursor:hand;<%if $rs.savefilepath==''%>display:none<%/if%>" id="delbtn_<%$rs.playlistitemid%>" src="images/delete.png" onClick="DeleteItemMedia(<%$rs.playlistitemid%>)">
+    <%/if%>
+    <input type="hidden" id="mediaid_<%$rs.playlistitemid%>" name="mediaid[<%$rs.playlistitemid%>]" value="<%$rs.mediaid%>"></div></td>
+    <td width=''><div align='center'><textarea onChange="SetDirty();" style="width:100%" rows="3" name="text[<%$rs.playlistitemid%>]" class=inputarea <%if not $canedit%>disabled<%/if%> ><%$rs.text%></textarea></div></td>
+    <td width=''><div align='center'>
+    <%if $canedit%>
+    <a href="index.php?controller=PlaylistItem&action=moveup&playlistitemid=<%$rs.playlistitemid%>" ><img title="上移" src="images/up.png" ></a> <a href="index.php?controller=PlaylistItem&action=movedown&playlistitemid=<%$rs.playlistitemid%>"><img title="下移" src="images/down.png" ></a> <a href="index.php?controller=PlaylistItem&action=delete&playlistitemid=<%$rs.playlistitemid%>"><img title="删除" src="images/delete.png" ></a>
+    <%/if%>
+    </div></td>
+    </tr>
+    <%foreachelse%>
+    <TR bgcolor=#ffffff><TD colspan=5 align=center height=50>该区域还没有加入图文内容..</TD></TR>
+    <%/foreach%>
+    <TR bgcolor=#ffffff><TD colspan=5></TD></TR>
+    </table>
+    
+    <%elseif $zone.type=="html"%>
+    <!--html type zone not have content list-->
+    <%/if%>
+</td>
+<%/if%>
+
+<td <%if $zone.type<>'html'%>width=280<%/if%> valign="top">
+    <table width='100%'  border=0 cellpadding=4 cellspacing=1 bgcolor='#cccccc'  <%if not $canedit%>disabled<%/if%> >
+    <tbody id='zonetable' style="display:">
+    <TR class=tdbg >
+    <TD colspan=2>
+        <table width="100%" border="0" cellpadding="2" cellspacing="0"><tr><td>
+        <div style="width:100%; margin-left:4px">区域属性</div>
+        </TD>
+        <TD style="text-align:right; padding-right:20px;">
+        <input name='zoneid' type='hidden' id='zoneid' value='<%$zone.zoneid%>' >
+    <input name='controller' type='hidden' id='controller' value='PlaylistItem' >
+    <input name='action' type='hidden' id='action' value='doeditzone' ></TD></tr></table>
+    </TD>
+    </TR>
+    <%if $zone.type=='video'%>
+    <tr class=fieldtr>
+      <td WIDTH=50>循环次数</td>
+      <td><input name="looptimes" class='inputbox' type="text" id="looptimes" value='<%$zone.looptimes%>' size=10/>
+        次</td>
+      </tr>
+    <%else%>
+    <tr class=fieldtr>
+      <td >播放时间</td>
+      <td><input name="looptimes" class='inputbox' type="text" id="looptimes" value='<%$zone.looptimes%>' size=10/>
+        秒</td>
+      </tr>
+    <%/if%>
+    <tr class=fieldtr>
+      <td>背景图片 </td>
+      <td><input name="bgmedia" class='inputbox' type="text" id="bgmedia" value='<%$zone.bgmedianame%>' size=15 onChange="SetZoneProperty(zoneid.value,'bgmedia',this.value);"/>
+        <input type="hidden" id="bgmediaid" name="bgmediaid" value='<%$zone.bgmediaid%>'>
+        <input type="hidden" id="bgmediapath" name="bgmediapath" value='<%$zone.bgmediapath%>'>
+        <img style="cursor:hand" src="./images/image.png"  onClick="javascript:var retval=SelMediaDialog(bgmediaid.id,bgmedia.id,bgmediapath.id,bgmediaid.value,'image');window.parent.SetZoneProperty(zoneid.value,'bgmedia',retval);"/> <img src="./images/erase.png" style="cursor:hand"
+        onClick="bgmediaid.value=bgmediapath.value=bgmedia.value='';"  alt="清除背景图"/></td>
+      </tr>
+    <tr class=fieldtr>
+      <td>背景颜色 </td>
+      <td><input name="bgcolor" class='inputbox' type="text" id="bgcolor" value='<%$zone.bgcolor%>' style=" background-color:<%$zone.bgcolor%>" size="10" onChange="window.parent.SetZoneProperty(zoneid.value,'bgcolor',this.value);"/>
+        <img src="./images/fbcolor.png" style="cursor:hand;" onClick="javascript:SelColorDialog(bgcolor.id);"/><img src="./images/erase.png" style="cursor:hand"
+        onClick="bgcolor.value='';bgcolor.style.backgroundColor='';"  alt="清除背景色"/></td>
+      </tr>
+      <%if $zone.type=='text'%>
+    <tr class=fieldtr>
+      <td>字幕样式 </td>
+      <td><select class=inputbox id="template" name="template" onChange="if(this.value=='roll'){roll_span.disabled=false;roll_span.style.display='';switch_span.disabled=true;switch_span.style.display='none';}else{roll_span.disabled=true;roll_span.style.display='none';switch_span.disabled=false;switch_span.style.display='';}">
+        <option value='roll' <%if 'roll'==$zone.template%>selected<%/if%> >滚动</option>
+        <option value='switch' <%if 'switch'==$zone.template%>selected<%/if%> >切换</option>
+        </select>
+        <span id=roll_span <%if $zone.template!='roll'%>disabled=true style="display:none"<%/if%>>
+        <select class=inputbox name='templateparam' id='templateparam'>
+          <option value='left' <%if 'left'==$zone.templateparam%>selected<%/if%> >向左滚动</option>
+          <option value='right' <%if 'right'==$zone.templateparam%>selected<%/if%> >向右滚动</option>
+          <option value='top' <%if 'top'==$zone.templateparam%>selected<%/if%> >向上滚动</option>
+          <option value='down' <%if 'down'==$zone.templateparam%>selected<%/if%> >向下滚动</option>
+        </select>
+        </span>
+        <span id=switch_span <%if $zone.template!='switch'%>disabled=true style="display:none"<%/if%> >
+        <select class=inputbox name='templateparam' id='templateparam'>
+          <option value='fadeout' <%if 'fadeout'==$zone.templateparam%>selected<%/if%> >淡入淡出</option>
+          <option value='mosaic' <%if 'mosaic'==$zone.templateparam%>selected<%/if%> >马赛克</option>
+          <option value='blur' <%if 'blur'==$zone.templateparam%>selected<%/if%> >模糊</option>
+        </select>
+        </span>
+        速度<select class=inputbox name='speed' id='speed'>
+          <option value='fast' <%if 'fast'==$zone.speed%>selected<%/if%> >快</option>
+          <option value='middle' <%if 'middle'==$zone.speed%>selected<%/if%> >中等</option>
+          <option value='slow' <%if 'slow'==$zone.speed%>selected<%/if%> >慢</option>
+          <option value='veryslow' <%if 'veryslow'==$zone.speed%>selected<%/if%> >很慢</option>
+        </select></td>
+      </tr>
+    <tr class=fieldtr>
+      <td>字体大小 </td>
+      <td><select class=inputbox name="fontsize">
+        <%for $i=9;$i<99;$i++%>
+        <option value='<%$i%>' <%if $i==$zone.fontsize%>selected<%/if%> >
+          <%$i%>
+          像素</option>
+        <%/for%>
+      </select></td>
+      </tr>
+    <tr class=fieldtr>
+      <td> 字体颜色 </td>
+      <td><input name="fontcolor" class=inputbox type="text" id="fontcolor" value='<%$zone.fontcolor%>' style=" background-color:<%$zone.fontcolor%>" size="10"/>
+        <img style="cursor:hand;" src="./images/fbcolor.png" onClick="SelColorDialog(fontcolor.id);"/></td>
+      </tr>
+      <%/if%>
+      <%if $zone.type=='html'%>
+    <tr class=fieldtr >
+    <td>页面模板</td><td><select class=inputbox name="template" id="template">
+      <option value='roll' <%if 'roll'==$zone.template%>selected<%/if%> >最新列表</option>
+      <option value='switch' <%if 'switch'==$zone.template%>selected<%/if%> >推荐列表</option>
+    </select></td>
+    </tr>
+    <tr class=fieldtr style="display:<%if $zone.type!='html'%>none<%/if%>">
+      <td>页面内容</td>
+      <td><select class=inputbox name="templateparam" id="templateparam">
+        <option value='roll' <%if 'roll'==$zone.templateparam%>selected<%/if%> >新闻咨询</option>
+        <option value='switch' <%if 'switch'==$zone.templateparam%>selected<%/if%> >二手交易</option>
+      </select></td>
+      </tr>
+      <%/if%>
+    </tbody>
+    </table>
+</td></tr>
+</tbody>
+</table>
+
+    
+
+
+</form>
+<div>
+<form id=addtozone_form name=addtozone_form method=Post>
+<input type='hidden' id='zoneid' name='zoneid' value='<%$zone.zoneid%>'/>
+<input type='hidden' id='mediaid' name='mediaid' value=''/>
+    <input type="hidden" name='controller' value='PlaylistItem'>
+    <input type="hidden" name='action' value='addtozone'>
+</form>
+</div>
+</BODY>
+</HTML>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config starttime="<%$rs.play_begin_hour%>" 
+	endtime="<%$rs.play_end_hour%>" 
+	downloadtime="<%$rs.download_hour%>"
+	popupsize="100" popupdelay="3"
+	popupdock="<%$rs.sidebar_position%>"
+	webdelay="4" popupbuttonx="80" popupbuttony="80" popupbuttoncellspace="10"
+	resfilekeep="<%$rs.res_keep_days%>">
+<popupbutton src="logo.jpeg" link="file:///PerConTouch/websystem/index.html" markcolor="16777215"/>
+</config>

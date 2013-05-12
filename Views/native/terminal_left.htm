@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><?=$site_title?> - <?=$page_title?></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<SCRIPT language=javascript>
+function unselectall()
+{
+    if(document.myform.chkAll.checked){
+	document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+    } 	
+}
+
+function CheckAll(form)
+{
+  for (var i=0;i<form.elements.length;i++)
+    {
+    var e = form.elements[i];
+    if (e.Name != "chkAll")
+       e.checked = form.chkAll.checked;
+    }
+}
+</SCRIPT>
+</head>
+
+<body scroll="no" style="MARGIN: 0px">
+<table width="100%" border="0" cellspacing="1" height='100%'>
+  <tr height="25">
+    <td height="25" width="50%" align="center" valign="middle">
+    <div align="center" class=a style="width:100%;height:100%"><a class="button" style="width:100%;height:100%" href="<?=$tree1_url?>" target="terminal_left">中继服务器</a></div></td>
+    <td align="center" width="50%" valign="middle">
+    <div align="center" class=a style="width:100%;height:100%"><a class="button" style="width:100%;height:100%" href="<?=$tree2_url?>" target="terminal_left">逻辑分组</a></div></td>
+  </tr>
+  <tr>
+    <td colspan="2" nowrap valign="center" align="middle" >
+	<iframe  scrolling="auto" id="terminal_left" name="terminal_left"  style="HEIGHT:100%; VISIBILITY: inherit; WIDTH: 100%; Z-INDEX: 2" 
+	frameborder="0" 
+	src="<?=$tree1_url?>"></iframe>
+	</td>
+  </tr>
+</table>
+
+</BODY>
+</HTML>

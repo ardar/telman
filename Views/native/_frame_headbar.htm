@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<title><?=$site_title?> - <?=$page_title?></title>
+<META http-equiv=Content-Type content="text/html; charset=utf-8" 
+MSSmartTagsPreventParsing?>
+<META http-equiv=MSThemeCompatible content=Yes><LINK 
+href="style.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.3790.218" name=GENERATOR>
+<SCRIPT LANGUAGE="JavaScript">
+function killErrors()
+{
+  return true;
+}
+window.onerror = killErrors;
+
+var ctroltime;
+
+function MyLoad()
+{
+	return;
+  ctroltime=setTimeout("ref_sms1()",3000);
+}
+
+function Reset()
+{
+	return;
+	ctroltime=setTimeout("ref_sms1()",10000);
+}
+
+function ref_sms1()
+{
+	return;
+  ctroltime=setTimeout("ref_sms1()",120000);
+  ref_new_msg.location="<?=urlhelper('proc' 'Msg' 'ref_new')?>";
+}
+
+//------------------------------------
+function show_sms()
+{
+	return;
+   clearTimeout(ctroltime);
+   ctroltime=window.setTimeout('ref_sms1()',360000);
+
+   mytop=screen.availHeight-190;
+   myleft=0;
+   window.open("<?=urlhelper('proc','Msg','read_new')?>","auto_call_show","height=150,width=400,status=0,toolbar=no,menubar=no,location=no,scrollbars=no,top="+mytop+",left="+myleft+",resizable=yes");
+}
+
+</script>
+</HEAD>
+<BODY leftMargin=0 topMargin=0 onload="MyLoad();">
+<TABLE height="100%" cellSpacing=0 cellPadding=2 width="100%" bgColor=#efefef 
+border=0>
+  <TBODY>
+  <TR vAlign=center>
+    <TD width="33%"><A href="http://<?=$site_domain?>/" 
+    target=right><?=$site_title?></A>
+    <span id="new_msg"></span>
+    </TD>
+    <TD align=middle width="33%"><B><?=$app_title?>控制面板（<?=$app_version?>）</B> </TD>
+    <TD align=right width="34%"><A href="<%$powerbyurl%>" 
+      target=_blank>PowerBy <?=$powerby?></A></TD></TR></TBODY></TABLE>
+    </BODY></HTML>
+    <!--<iframedddd name="ref_new_msg" src="<%url_helper type='proc' param1='Msg' param2='ref_new'%>" width="0" height="0"></iframe>
+-->

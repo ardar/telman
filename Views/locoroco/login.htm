@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><%$pagetitle%></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #333; margin:0px; padding:0px;" onLoad="form_login.username.focus()">
+<div style="position: relative; border: dashed 1px; vertical-align:middle; background-image:url(images/themes/locoroco/login_bg.png); height:217px; width:600px; left:50%; top:50%;margin-left:-300px; margin-top:-108px; ">
+<table width="37%"  border="0" align="center" valign=center cellpadding="2" cellspacing="1" style="position:relative; left:150px; top:50px;">
+  <form method="post" action="" id="form_login">
+  <tr>
+    <td width="27%"><div align="right">用 户 名</div></td>
+    <td width="73%"><input name="username" type="text" class="inputbox" id="username" style="width:105px; height:20px; vertical-align:text-bottom;"></td>
+  </tr>
+  <tr>
+    <td><div align="right">密 码</div></td>
+    <td><input name="password" type="password" class="inputbox" id="password" style="width:105px; height:20px; vertical-align:text-bottom;"></td>
+  </tr>
+    <tr>
+    <td><div align="right">自动登录</div> </td>
+    <td><input name="savestate" type="checkbox" class="inputbox" id=savestate >  (勿在公共电脑选择)</td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td><input name="Submit" type="submit" class="button" value="登陆">
+    <input name="controller" type="hidden" id="module" value="Account"> 
+    <input name="action" type="hidden" id="proc" value="dologin">
+    <input name="return_url" type="hidden" id="return_url" value="<%$return_url%>"> 
+    </td>
+  </tr></form>
+</table>
+</div>
+</body>
+</html>

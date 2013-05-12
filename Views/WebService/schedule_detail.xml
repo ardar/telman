@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schedule starttime="6" endtime="23" name="<%$xml.logicalgroup.logicalgroupname%>" startdate="<%$xml.begin_date%>" enddate="<%$xml.begin_date%>" id="<%$xml.scheduleid%>">
+<%foreach $xml.blocks as $hourkey=>$block%>
+	<part starttime="<%$block.begin_hour%>" endtime="<%$block.end_hour%>">
+	<%foreach $block.playlists as $playlistkey=>$playlist%>
+		<package id="<%$playlist.scheduleitemid%>" bkid="<%$playlist.bgmediaid%>" <%if $playlist.bgmediapath<>''%>bksrc="<%$playlist.bgmediapath%>"<%/if%> times="1" screen="<%$playlist.screenratio%>">
+			<%foreach $playlist.zones as $zonekey=>$zone%>
+			<zone name="<%$zone.zonename%>" type="<%$zone.type%>" x="<%$zone.left%>" y="<%$zone.top%>" width="<%$zone.width%>" height="<%$zone.height%>" 
+				times="-1" bkcolor="<%$zone.bgcolor%>" <%if $zone.bgmediapath<>''%>bksrc="<%$zone.bgmediapath%>"<%/if%> bkid="<%$zone.bgmediaid%>" 
+				speed="<%$zone.speed%>" template="<%$zone.template%>" param="<%$zone.templateparam%>" fontpix="<%$zone.fontpix%>" fontcolor="<%$zone.fontcolor%>" 
+				<%if $zone.src<>''%>src="<%$zone.src%>"<%/if%> >
+				<%foreach $zone.items as $item%>
+				<res id="<%$item.mediaid%>" <%if $zone.type=='video'%>long="<%$item.duration%>"<%/if%> <%if $item.savefilepath<>''%>src="<%$item.savefilepath%>" <%if $zone.type=="text"%>maxwidth="<%$item.width%>" maxheight="<%$item.height%>"<%/if%><%/if%> <%if $zone.type=="text"%>text="<%$item.text%>"<%/if%>/>
+				<%/foreach%>
+			</zone>
+			<%/foreach%>
+		</package>
+	<%/foreach%>
+	</part>
+<%/foreach%>
+</schedule>

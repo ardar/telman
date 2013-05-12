@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/schedule_calendar.js">
+</SCRIPT>
+</head>
+<body >
+<table class=toolbar><tr><td>
+<a href="<%$monthview_url%>" target='' class='button' ><img border=0 src='images/calendar.png'  > 返回月视图</a>
+<a href="<%$weekview_url%>" target='' class='button' ><img border=0 src='images/calendar3.png' > 返回周视图</a>
+<%if $canaudit%>
+<a href='<%$audit_url%>' target='' class='button' onClick="if(!confirm('确定要通过审核全部节目包吗?'))return false;"><img border=0 src='images/audited.png' > 通过审核</a>
+<a href='<%$disaudit_url%>' target='' class='button' onClick="if(!confirm('确定要取消审核全部节目包吗?'))return false;"><img border=0 src='images/unaudited.png'> 取消审核</a>
+<%/if%>
+<%if $canedit%>
+<a href='<%$delblock_url%>' target='' class='button' onClick="if(!confirm('确定要删除全部未审核的节目包吗?'))return false;"><img border=0 src='images/delete.png'> 删除全部未审核节目包</a>
+<%/if%>
+</td></tr></table>
+
+<%$table%>
+<form id=addtoschedule_form name=dataform method=Post>
+<input type='hidden' id='logicalgroupid' name='logicalgroupid' value='<%$logicalgroup.logicalgroupid%>'/>
+<input type='hidden' id='selected_id' name='selected_id' value='<%$selected_id%>'/>
+<input type='hidden' id='begin_date' name='begin_date' value='<%$begin_date%>'/>
+<input type='hidden' id='playlistid' name='playlistid' value=''/>
+<input type="hidden" name='controller' value='Schedule'/>
+<input type="hidden" id="action" name='action' value='addplaylist'/>
+</form>
+</BODY>
+</HTML>

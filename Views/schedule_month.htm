@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/schedule_calendar.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/monitor.js">
+</SCRIPT>
+</head>
+<body onLoad="OnLoadSchedules();">
+<table class=toolbar><tr><td><img src='images/group.png' border=0> [<b><%$logicalgroup.logicalgroupname%></b>] 的节目时间表</td></tr></table>
+
+<table width='100%'  border=0 cellpadding=2 cellspacing=1 bgcolor='#e1e1e1' class='data_table'>
+<form id=addtoschedule_form name=dataform method=Post>
+<TR class=title >
+  <TD  colspan=7>
+<table width=100%>
+  <tr>
+    <td><input type="button" value=" < " style="border:solid 1px #666; height=20px;" title="上一年" onClick="SetYear(-1);">
+      <select name="year" id="year"  style="font-weight:bold; height=20px;" onChange="set_year(0);">
+        <%for $i=1900;$i<2100;$i++%>
+        <option value="<%$i%>" <%if $i==$year%>selected<%/if%> >
+          <%$i%>
+          </option>
+        <%/for%>
+      </select>
+      <input type="button" value=" > " style="border:solid 1px #666; height=20px;" title="下一年" onClick="SetYear(1);">
+      <b>年</b>
+      <input type="button" value=" < "  style="border:solid 1px #666; height=20px;" title="上一月" onClick="SetMonth(-1);">
+      <select name="month" id="month"  style="border:solid 1px #666; font-weight:bold; height=20px;" onChange="set_mon(0);">
+        <%for $i=1;$i<13;$i++%>
+        <option value="<%if $i<10%>0<%/if%><%$i%>" <%if $i==$month%>selected<%/if%> >
+          <%$i%>
+          </option>
+        <%/for%>
+      </select>
+      <input type="button" value=" > "  style="border:solid 1px #666; height=20px;" title="下一月" onClick="SetMonth(1);">
+      <b>月</b><a href="#" style=" height=20px;" onClick="GoMonthView(year.value, month.value);" title="GO" ><img src="images/go.png" border=0></a></a></td>
+    <td></td>
+  </tr>
+</table>
+
+</TD></TR>
+
+<tr class=headbar>
+  <td colspan="8">
+  <table width=100%>
+<tr><td>
+<%if $canop%>
+<a id='btn_selectall' onClick="UpdateSchedule(1, 1);" class='button' ><img border=0 src='images/notify.png' height=12 > 发送更新通知 </a>
+<%/if%></td>
+<td align=right>
+<input type='hidden' id='begin_date' name='begin_date' value=''/>
+<input type='hidden' id='logicalgroupid' name='logicalgroupid' value='<%$logicalgroup.logicalgroupid%>'/>
+<input type='hidden' id='selected_id' name='selected_id' value='<%$selected_id%>'/>
+<input type='hidden' id='playlistid' name='playlistid' value='<%$playlistid%>'/>
+    <input type="hidden" name='controller' value='Schedule'/>
+    <input type="hidden" id="action" name='action' value='addplaylist'/>
+    <input type="hidden" id="scheduleitemid" name='scheduleitemid' value=''/>
+<input type='hidden' id='copysource_id' name='copysource_id' value=''/>
+<%if $canaudit%> 
+    <a id='btn_selectall' class="button" onClick="SelectAllDates()" ><img src='images/selectall.png' width=12 border=0/> 全选 </a> 
+    <a id='btn_cancelselect' disabled=true class="button" onClick="CancelSelectAllCells()" ><img src='images/cancelall.png' width=12 border=0/> 不选 </a> 
+    <a id='btn_audit' disabled=true class="button" onClick="if(confirm('确定要通过审核选中的节目包吗?'))AuditSelBlocks()" ><img src='images/audited.png' width=12 border=0/> 通过审核 </a> 
+    <a id='btn_disaudit' disabled=true class="button" onClick="if(confirm('确定要取消审核选中的节目包吗?'))DisAuditSelBlocks()" ><img src='images/unaudited.png' width=12 border=0/> 取消审核 </a> 
+<%/if%>
+<%if $canedit%>
+    <a id='btn_edit' disabled=true class="button" onClick="EditSelBlocks()" ><img src='images/edit.png' width=12 border=0/> 编辑 </a> 
+    <a id='btn_delete' disabled=true class="button" onClick="if(confirm('确定要删除选中的未审核节目包吗?'))DelSelBlocks()" ><img src='images/delete.png' width=12 border=0/> 删除未审 </a> 
+    <a id='btn_copy' disabled=true class="button" onClick="CopySelBlocks()" ><img src='images/copy.png' width=12 border=0/> 复制 </a> 
+    <a id='btn_paste' disabled=true class="button" onClick="PasteSelBlocks()" ><img src='images/paste.png' width=12 border=0/> 粘贴 </a><%/if%> 
+</td></tr></table>
+  </td>
+  </tr>
+<tr class=tdbg>
+    <td class=calendar_week_head id="col_weekday0" style="background-color:#FCF">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期天</div></td>
+    <td class=calendar_week_head id="col_weekday1">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期一</div></td>
+    <td class=calendar_week_head id="col_weekday2">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期二</div></td>
+    <td class=calendar_week_head id="col_weekday3">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期三</div></td>
+    <td class=calendar_week_head id="col_weekday4">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期四</div></td>
+    <td class=calendar_week_head id="col_weekday5">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期五</div></td>
+    <td class=calendar_week_head id="col_weekday6" style="background-color:#AFA">
+  <div class=calendar_weekname style="font-size:16px; font-weight:bold">星期六</div></td>
+  </tr>
+<%foreach $list.cells as $datekey=>$cell%>
+<%if $cell.tr==1%>
+<tr class=cellbg>
+<%/if%>
+<td class=calendar_week_cell onMouseOverd="title_<%$datekey%>.left=this.left;title_<%$datekey%>.top=this.top;title_<%$datekey%>.style.display='';" onMouseOutd="title_<%$datekey%>.style.display='none';"
+ style="text-align:center"
+ id="c_<%$datekey%>" onClick="OnClickCell(this.id);" onDblClick="DBClickCell(this.id);" <%if $cell.date==''%>disabled=true<%/if%> >
+<div id="title_<%$datekey%>" style="display:none; position:absolute; border:solid 1px #blue; background-color:#eee; text-align:left; padding:15px; width:220px; overflow:auto; font-style:italic;">
+<%foreach $cell.items as $rs%>
+<%$rs.hourname%>: <img width=14 src="images/audited.png" border=0 /><%$rs.auditedcount%>个节目包, 
+<img width=14 src="images/unaudited.png" border=0 /><%$rs.unauditedcount%>个节目包
+<br/>
+<%foreachelse%>
+没有安排节目包
+<%/foreach%>
+</div>
+<div style=" font-size:16px;  font-style:italic;<%if $datekey==$today%>color:blue;<%/if%>"><b><%$cell.date%></b></div>
+<div style="font-size:11px; font-style:italic;">
+ <%if $cell.auditedcount>0%><img width=14 src="images/audited.png" border=0 /><%$cell.auditedcount%>个节目包<br><%/if%>
+ <%if $cell.unauditedcount>0%><img width=14 src="images/unaudited.png" border=0 /><%$cell.unauditedcount%>个节目包<%/if%>
+ </div>
+</td>
+<%if $cell.tr==2%>
+</tr>
+<%/if%>
+<%/foreach%>
+</form>
+</table>
+<div>
+</div>
+</BODY>
+</HTML>

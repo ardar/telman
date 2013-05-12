@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<style type="text/css">
+.cellbox
+{
+	 background-color:#efefef;
+}
+</style>
+</head>
+
+<body>
+
+<table width='100%'  border=0 cellpadding=2 cellspacing=1 class='data_table' >
+<TR><TD bgcolor=#ffffff class=tabletitle colspan=5>
+<table width=100% height=10 cellpadding=0 cellspacing=0 border=0 class=tdabletitle>
+			<form id=navform action='' method=GET><TR><TD align=left valign=center >
+<B>节目包 列表</B>
+</TD><TD align=left style='padding-left:20px;'></TD></TR></form></table>
+</TD></TR>
+<TR><TD class=headbar >
+<table width=100%><form id=headform action='' method=GET><TR>
+<TD align=left> <input type='button' onClick="window.location.href='index.php?controller=Playlist&action=add';" class='button' value='创建节目包'> 名称<input name='playlistname' type='text' class='inputbox' id='playlistname' value='' >
+<input name='action' type='hidden' class='inputbox' id='action' value='index' >
+<input name='controller' type='hidden' class='inputbox' id='controller' value='Playlist' >
+<input name='submit' type='submit'  class='button' value='查找'></TD></TR></form></table>
+</TD></TR>
+<form id=dataform name=dataform method=Post>
+<tr class=tdbg>
+<td >排序方式 : <a href="#">节目包名字</a> | <a href="#">宽高比</a></td>
+</tr>
+<tr class=celltr>
+<td class=celltd>
+<div nowrap style="text-align: left;">
+<%foreach $list as $rs%>
+<div style="float:left; padding:8px; margin:1px; text-align: center;  " onClick="if(this.className=='celltr_selected')this.className='cellbox';else {this.className='celltr_selected';}" onMouseOver="if(this.className!='celltr_selected')this.className='celltr_hover';" 
+onmouseout="if(this.className!='celltr_selected')this.className='cellbox';" class="cellbox">
+                
+<div style="padding:5px"><a href="index.php?controller=Playlist&action=playedit&playlistid=<%$rs.playlistid%>"><img width=130 border=0 id='' src='<%$rs.preview%>' ></a></div>
+<div><a href="index.php?controller=Playlist&action=playedit&playlistid=<%$rs.playlistid%>"><b><%$rs.playlistname%></b></a></div>  <div >播放时间: <%$rs.duration%></div>   
+<div> <a class=button href="index.php?controller=Playlist&action=playedit&playlistid=<%$rs.playlistid%>"> 详情 </a> <a class=button target=_blank href="index.php?controller=Playlist&action=preview&playlistid=<%$rs.playlistid%>"> 预览 </a> <%if $canedit%><a class=button href="index.php?controller=Playlist&action=delete&playlistid=<%$rs.playlistid%>"> 删除 </a><%/if%></div>
+</div>
+<%/foreach%>
+</div>
+</td>
+</tr>
+<TR class=pager><TD colspan=5>
+<%$pager%></table></TD></TR>
+</table>
+
+</BODY>
+</HTML>

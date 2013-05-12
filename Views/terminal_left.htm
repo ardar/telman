@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><%$pagetitle%></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+</head>
+
+<body scroll="no" style="MARGIN: 0px">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" height='100%'>
+  <tr height="25">
+    <td height="25" width="50%" align="center" valign="middle"><a class="button" style="width:100%;height:100%" href="<%$tree1_url%>" target="terminal_left"> <img src='images/repeater.png' border=0> 物理分组 </a></td>
+    <td align="center" width="50%" valign="middle"><a class="button" style="width:100%;height:100%" href="<%$tree2_url%>" target="terminal_left"> <img src='images/group.png' border=0> 逻辑分组 </a></td>
+  </tr>
+  <tr>
+    <td colspan="2" nowrap valign="center" align="middle" >
+	<iframe  scrolling="auto" id="terminal_left" name="terminal_left"  style="HEIGHT:100%; VISIBILITY: inherit; WIDTH: 100%; Z-INDEX: 2" 
+	frameborder="0" 
+	src="<%$tree1_url%>"></iframe>
+	</td>
+  </tr>
+</table>
+
+</BODY>
+</HTML>

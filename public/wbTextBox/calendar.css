@@ -1,0 +1,54 @@
+
+body { font-size: 12pt; font-family:Verdana; }
+.bodycolor { BACKGROUND: #677CAD}
+
+.panel{ BACKGROUND: #C4D9EF; COLOR:#654125;}
+
+A:link { COLOR: #0000FF; TEXT-DECORATION: none;}
+A:visited { COLOR: #0000FF; TEXT-DECORATION: none}
+A:active  { COLOR: #3333ff; TEXT-DECORATION: none}
+A:hover   { COLOR: #ff0000; TEXT-DECORATION: none}
+
+input.SmallButton{ BORDER-RIGHT: #104a7b 1px solid black; BORDER-TOP: #afc4d5 1px solid black; BORDER-LEFT: #afc4d5 1px solid black; BORDER-BOTTOM: #104a7b 1px solid;
+background-image: url("../images/button_back.gif"); CURSOR: hand; COLOR: #000066; HEIGHT: 19px; FONT-SIZE: 9pt;  TEXT-DECORATION: none}
+
+input.BigButton  { BORDER-RIGHT: #104a7b 1px solid black; BORDER-TOP: #afc4d5 1px solid black; BORDER-LEFT: #afc4d5 1px solid black; BORDER-BOTTOM: #104a7b 1px solid;
+background-image: url("../images/button_back.gif"); CURSOR: hand; COLOR: #000066; HEIGHT: 24px; FONT-SIZE: 12pt; TEXT-DECORATION: none}
+
+input.SmallInput { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal;border-color:#9DBBD9}
+input.SmallInput1{ COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-RIGHT:0; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal;border-color:#9DBBD9}
+input.BigInput   { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 22px; LINE-HEIGHT: normal;border-color:#9DBBD9}
+
+input.SmallStatic{ COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal}
+input.BigStatic  { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 10pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal;LINE-HEIGHT: normal;border-color:#9DBBD9}
+
+textarea.BigInput { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal;LINE-HEIGHT: normal;border-color:#9DBBD9}
+textarea.SmallInput { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal;LINE-HEIGHT: normal;border-color:#9DBBD9}
+
+select.BigSelect  { COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 22px; LINE-HEIGHT: normal}
+select.SmallSelect{ COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal}
+
+select.BigStatic  { COLOR: #000066; BACKGROUND: #E0E0E0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 22px; LINE-HEIGHT: normal}
+select.SmallStatic{ COLOR: #000066; BACKGROUND: #E0E0E0; border:1 solid black; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal}
+
+textarea.BigStatic{ COLOR: #000000; BACKGROUND: #F0F0F0; border:1 solid black; BORDER-BOTTOM:1px double; FONT-SIZE: 10pt; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal;LINE-HEIGHT: normal;border-color:#9DBBD9}
+
+.small  { font-size: 9pt;}
+.small1  { font-size: 9pt;COLOR: #FFFFFF;}
+.big { font-size: 12pt;}
+.big1   { font-size: 12pt;COLOR: #FFFFFF;}
+.big2   { font-size: 18pt}
+.big3   { font-size: 12pt;COLOR: #FFFFFF;FONT-WEIGHT: bold;}
+.big4   { COLOR: #FF0000;}
+.verybig{ font-size: 24pt}
+
+.TableHeader { color:ffffff; FONT-WEIGHT: bold; FONT-SIZE: 11pt; background-image: url("../images/headerbg.gif") }
+.LeftTableData   { height: 23px;background-color:#deebff}
+.RightTableData   { BACKGROUND: #F0F0F0;}
+.TableControl{ BACKGROUND: #EFF7FF;}
+.TableContent{ BACKGROUND: #E2E8FA;}
+.TableLine1  { BACKGROUND: #F3F3F3;}
+.TableLine2  { BACKGROUND: #FFFFFF;}
+.TextColor1  { COLOR: #FF6600;}
+.TextColor2  { COLOR: #FF0000;}
+.TableData   { font-size: 9pt;BACKGROUND: #FFFFFF;COLOR:#000000;}

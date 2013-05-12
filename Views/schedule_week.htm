@@ -1,0 +1,102 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/schedule_calendar.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/monitor.js">
+</SCRIPT>
+</head>
+<body onLoad="OnLoadSchedules();">
+<table class=toolbar><tr><td>
+
+<img src='images/group.png' border=0> [<b><%$logicalgroup.logicalgroupname%></b>] 的节目时间表
+ </td></tr></table>
+
+<table width='100%'  border=0 cellpadding=2 cellspacing=1 bgcolor='#e7e7e7' class='data_table'>
+<form id=addtoschedule_form name=dataform method=Post>
+<TR class=title ><TD  colspan=8>
+<table border=0 width=100%>
+<tr><td width='10%'>
+<table cellpadding="0"><tr><td>
+<input class='border' type='text' id='begin_date' name='begin_date' value='<%$begin_date%>' readonly=true/></td><td>
+<a style="cursor:hand;" onClick="javascript:OnClickSelectDate('begin_date','<%$begin_date%>')"><img src='images/calendar.png' border=0 style="vertical-align:text-bottom" title="选择显示日期"></a>
+</td></tr></table>
+</td><td align=right>
+    </td></tr></table>
+</TD></TR>
+<tr class=headbar>
+  <td colspan="8" align=right>
+  
+  <table width=100%>
+<tr><td >
+<%if $canop%>
+<a id='btn_selectall' onClick="UpdateSchedule(1, 1);" class='button' ><img border=0 src='images/notify.png' height=12 > 发送更新通知 </a>
+<%/if%>
+    <a id='btn_selectall' onClick="window.location.href='<%$monthview_url%>'" class='button' ><img border=0 src='images/back.png'  > 返回月视图 </a>
+    </td><td align=right>
+
+<input type='hidden' id='logicalgroupid' name='logicalgroupid' value='<%$logicalgroup.logicalgroupid%>'/>
+<input type='hidden' id='selected_id' name='selected_id' value='<%$selected_id%>'/>
+<input type='hidden' id='playlistid' name='playlistid' value='<%$playlistid%>'/>
+    <input type="hidden" name='controller' value='Schedule'/>
+    <input type="hidden" id="action" name='action' value='addplaylist'/>
+    <input type="hidden" id="scheduleitemid" name='scheduleitemid' value=''/>
+<input type='hidden' id='copysource_id' name='copysource_id' value=''/><a></a>
+
+<%if $canaudit%>
+    <a id='btn_selectall' class="button" onClick="SelectAllCells()" ><img src='images/selectall.png' width=12 border=0/> 全选 </a> 
+    <a id='btn_cancelselect' disabled=true class="button" onClick="CancelSelectAllCells()" ><img src='images/cancelall.png' width=12 border=0/> 不选 </a> 
+    <a id='btn_audit' disabled=true class="button" onClick="if(confirm('确定要通过审核选中的节目包吗?'))AuditSelBlocks()" ><img src='images/audited.png' width=12 border=0/> 通过审核 </a> 
+    <a id='btn_disaudit' disabled=true class="button" onClick="if(confirm('确定要取消审核选中的节目包吗?'))DisAuditSelBlocks()" ><img src='images/unaudited.png' width=12 border=0/> 取消审核 </a> 
+<%/if%>
+<%if $canedit%>
+    <a id='btn_edit' disabled=true class="button" onClick="EditSelBlocks()" ><img src='images/edit.png' width=12 border=0/> 编辑 </a> 
+    <a id='btn_delete' disabled=true class="button" onClick="if(confirm('确定要删除选中的未审核节目包吗?'))DelSelBlocks()" ><img src='images/delete.png' width=12 border=0/> 删除未审 </a> 
+    <a id='btn_copy' disabled=true class="button" onClick="CopySelBlocks()" ><img src='images/copy.png' width=12 border=0/> 复制 </a> 
+    <a id='btn_paste' disabled=true class="button" onClick="PasteSelBlocks()" ><img src='images/paste.png' width=12 border=0/> 粘贴 </a>
+<%/if%>
+   </td></tr>
+   </table>
+  </td>
+</tr>
+<tr>
+  <td class=calendar_week_head>&nbsp;</td>
+  <%foreach $list.header as $datekey=>$date%>
+  <td class=calendar_week_head id="col_<%$datekey%>" onClick="SelectDateColumn(this.id);" style="<%if $datekey==$today%>color:blue<%/if%>" >
+  <div><%$date.date%><div/><div class=calendar_weekname><%$date.weekdayname%></div></td>
+  <%/foreach%>
+</tr>
+<%foreach $list.cells as $hourkey=>$row%>
+<tr class=cellbg>
+<td class=calendar_week_time id="row_<%$hourkey%>" onClick="SelectHourRow(this.id);"><div><%$row.hourname%></div> </td>
+<%foreach $row.days as $key=>$date%>
+<td class=calendar_week_cell onMouseOverd="OnCellMouseOver(this);" onMouseOutd="OnCellMouseOut(this);"
+style=" font-style:italic;<%if $date.ispassed==1%>color=gray;<%/if%>"
+ id="c_<%$key%>_<%$row.hour%>" onClick="OnClickCell(this.id);" onDblClick="DBClickCell(this.id);">
+<%foreach $date.items as $rs%>
+
+<span id="cell_item_<%$rs.scheduleitemid%>" class="calendar_cellitem" title="<%$rs.playlistname%>" onMouseOver="OnItemMouseOver(<%$rs.scheduleitemid%>);" onMouseOut="OnItemMouseOut(<%$rs.scheduleitemid%>);" onClick="return true;">
+<%if $canedit%>
+<%if $rs.isaudited==0%>
+<a href="javascript:DelSelectItem(<%$rs.scheduleitemid%>);" style="display:none" class="calendar_cellcp" id="cell_cp_<%$rs.scheduleitemid%>" title="移除播放列表项"><img src='images/delete.png' width=15 border=0/></a>
+<%/if%>
+<%/if%>
+<img width=14 src="images/<%if $rs.isaudited==1%>audited.png<%else%>unaudited.png<%/if%>" border=0 id="img_<%$rs.scheduleitemid%>"/><%$rs.playlisttitle%>(<%$rs.durationdesc%>)
+
+</span>
+<br/>
+<%/foreach%>
+</td>
+<%/foreach%>
+</tr>
+<%/foreach%>
+</form>
+</table>
+<div>
+</div>
+</BODY>
+</HTML>

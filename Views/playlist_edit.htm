@@ -1,0 +1,156 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="layout_edit.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js"/>
+</SCRIPT>
+<SCRIPT language=javascript src="ui/playlist_edit.js"/>
+</SCRIPT>
+</head>
+
+<body>
+
+<table width='100%' border=0 cellpadding=2 cellspacing=1 class='data_form'><form id=myform action='' method='post' onSubmit="if(!isclicksubmit)return false;"  enctype='multipart/form-data'>
+<TR class=tabletitle><TD colspan=3><B><%$page_title%></B></TD></TR>
+<tbody <%if not $canedit%>disabled=true<%/if%>>
+<tr class=celltr>
+  <td class=fieldtd>节目包名称</td>
+  <td class=valuetd><input name='playlistname' type='text' class='inputbox' id='playlistname' value='<%$rs.playlistname%>' size="40"  ></td>
+  <td class=valuetd width="43%" rowspan="7" align="center" valign="middle">
+  <div style="height:20px; text-align:center;"><b>布局预览 <%$rs.screenratio%></b></div>
+  <div id="container" class="container" style=" position:relative; height:130px;width:130px;">
+  <img src="<%$layout.layoutpreview%>">
+</div>
+   <div style="height:30; vertical-align:bottom; margin-top:10px;">
+   <a target=_blank href="<%url_helper type='action' param1=$controller param2='preview' param3='&playlistid=' param4=$rs.playlistid%>" class=button >预览节目包</a>
+   
+<%if $canedit%>
+   <a href="<%url_helper type='action' param1=$controller param2='applytemplate' param3='&playlistid=' param4=$rs.playlistid%>" class=button >应用模板</a>
+   <a href="<%url_helper type='action' param1='MediaTemplate' param2='edit' param3='&templateid=' param4=$rs.templateid%>" class=button >修改布局</a>
+  <input type="hidden" name="templateid" id="templateid" value="<%$rs.templateid%>">
+  <input type="hidden" name="layout" id="layout" value="<%$rs.layout%>">
+   <input type="hidden" name="screenratio" id="screenratio" value="<%$rs.screenratio%>">
+   
+<%/if%>
+   </div>
+   <ul id=zindexlist style="display:none">
+        </ul>
+   </td>
+  </tr>
+
+<tr>
+  <td class=fieldtd>备注</td>
+  <td class=valuetd width="47%"><input name='playlistdesc' type='text' class='inputbox' id='playlistdesc' value='<%$rs.playlistdesc%>' size="40"  ></td>
+  </tr>
+
+ <tr>
+  <td class=fieldtd>创建时间</td>
+  <td class=valuetd><%$rs.createtime|formatdatetime%></td>
+  </tr>
+<tr>
+  <td class=fieldtd>创建用户名</td>
+  <td class=valuetd><%$rs.creatorname%></td>
+  </tr>
+<tr>
+  <td class=fieldtd>播放总时长</td>
+  <td class=valuetd valign="top" ><%$rs.durationdesc%></td>
+  </tr>
+<tr>
+<td class=fieldtd>屏幕背景色</td>
+  <td class=valuetd><input name="bgcolor" class=inputbox type="text" id="bgcolor" value='<%$layout.bgcolor%>' size="10" style="background-color:<%$layout.bgcolor%>"/>
+    <img style="cursor:hand" id='selcolor' src="./images/fbcolor.png" onClick="SelColorDialog(bgcolor.id);SetZoneProperty('template','bgcolor',bgcolor.value);return false;"/>
+    <img style="cursor:hand" src="./images/erase.png"
+    onClick="bgcolor.value='';bgcolor.style.backgroundColor='';return false;"  alt="清除背色"/></td>
+</tr>
+<tr>
+  <td class=fieldtd>屏幕背景图</td>
+  <td class=valuetd>
+  <input name="bgmedianame" class='inputbox' type="text" id="bgmedianame" value="<%$layout.bgmedianame%>" onChange="SetZoneProperty('template','bgmedia',this.value);">
+    <input type="hidden" id="bgmediaid" name="bgmediaid" value='<%$layout.bgmediaid%>'>
+    <input type="hidden" id="bgmediapath" name="bgmediapath" value='<%$layout.bgmediapath%>'>
+    <img style="cursor:hand" src="./images/image.png" onClick="var retval=SelMediaDialog(bgmediaid.id,bgmedianame.id,bgmediapath.id,bgmediaid.value,'image'); SetZoneProperty('template','bgmedia',retval);return false;"/>
+    <img style="cursor:hand" src="./images/erase.png"
+    onClick="bgmediaid.value=bgmedianame.value=bgmediapath.value='';return false;"  alt="清除背景图"/>
+  </td>
+  </tr>
+ <!--tr>
+  <td class=fieldtd>背景音乐</td>
+  <td class=valuetd>
+  <input name="bgaudioname" class='border' type="text" id="bgaudioname" value="<%$rs.bgaudioname%>" >
+    <input type="hidden" id="bgaudioid" name="bgaudioid" value='<%$rs.bgaudioid%>'><input type="hidden" id="bgaudiopath" name="bgaudiopath" value='<%$rs.bgaudiopath%>'>
+    <input type="image" src="./images/audio.png" onClick="var retval=SelMediaDialog(bgaudioid.id,bgaudioname.id,bgaudiopath.id,bgaudioid.value,'audio');return false;"/>
+    <input type="image" src="./images/delete.png"
+    onClick="bgaudioid.value=bgaudioname.value=bgaudiopath.value='';return false;"  alt="清除背景音乐"/>
+  </td>
+  </tr-->
+</tbody>
+  <tr class=celltr>
+    <td colspan="3" style="margin:0;height=300px; padding:0px;">
+      
+      <table border=0 class=border cellspacing=0 cellpadding=0 width=100% height=100% id=tblTotal Name = tblTotal align=center>
+        <tr class=tdbg>
+          <td nowrap valign="center" style="padding:3px" align="right" height='25'>
+            <input type="hidden" id="sel_zonetype" name='sel_zonetype' value="<%$sel_zonetype%>">
+            <input type="hidden" id="sel_mediaid" name='sel_mediaid' value="">
+            <input type="hidden" id="sel_zoneid" name='sel_zoneid' value="<%$sel_zoneid%>">
+            <a class=button <%if not $canedit%>disabled<%/if%> href="javascript:" onClick="if(sel_mediaid.value!='' && sel_zoneid.value!='') AddMediaToZone(sel_mediaid.value,sel_zoneid.value);"><img src="images/additem.png" width="15" height="15">将选中项加入到=></a></td>
+          <td style="border-left:solid 1px #666; padding-left:3px; padding-top:3px; padding-right:3px; padding-bottom:0px;vertical-align:bottom;">
+            <div id=zonebtnlist style="padding:0px; margin-bottom:0px; height:100%; vertical-align:bottom;"> 媒体区域:  
+              <%foreach $zones as $zone%>
+              <a <%if $zone.selected==1%>class="selzone_button"<%else%>class="zone_button"<%/if%> id='zonebtn_<%$zone.zoneid%>' onClick="SelectZoneBtn('<%$zone.zoneid%>','<%$zone.type%>');" dtarget="main_right"><img border="0" src="./images/<%$zone.type%>.png" > <%$zone.zonename%></a> 
+              <%/foreach%>
+              </div>
+            </td>
+          </tr>
+        <tr>
+          <td id="td_left" name="td_left" nowrap valign="top" align="middle" width=20% height='280'>
+    <%if $canedit%>
+            <iframe scrolling="auto" id="main_left" name="main_left"  style="HEIGHT:100%; VISIBILITY: inherit; WIDTH: 100%; Z-INDEX: 1; " 
+	frameborder="0" 
+	src="<%url_helper type='action' param1='Folder' param2='picktree' param3="&return_field=sel_mediaid&showfile=1"%>"></iframe>
+    <%/if%>
+            </td>
+          <!--TD id=cmenu BACKGROUND="images/bg-10.png" width="10">
+<SPAN id=Label1><SPAN id=switchPoint title="view / hide" style="CURSOR: hand" onclick="switchSysBar();">
+<IMG src="images/a.png"></SPAN></span>
+</TD-->
+          <td width='100%' style="border-left:solid 1px #666;">
+            <table  border=0 cellspacing=0 cellpadding=0 width=100% height=100% align="center">
+              <tr>
+                <td width='100%' nowrap>
+                <div id='zone_container'>
+                <%section name=i loop=$zones%>
+                <div id="zone_div_<%$zones[i].zoneid%>" style="display:<%if $zones[i].zoneid<>$zones[0].zoneid%>none<%/if%>;">
+                  <iframe id="main_right_<%$zones[i].zoneid%>" name="main_right_<%$zones[i].zoneid%>" style="height: 100%; visibility: inherit; width: 100%;z-index: 1; " 
+	frameborder=0 marginwidth="0" marginheight="0" 
+	src="<%url_helper type='action' param1='PlaylistItem' param2='editzone' param3='&zoneid=' param4=$zones[i].zoneid%>"></iframe>
+    </div>
+    			<%/section%>
+                  </div>
+                  <iframe id="main_hidden" name="main_hidden" style="height:0%; visibility:hidden; width:0%;z-index: 0" 
+	frameborder=0 marginwidth="0" marginheight="0" 
+	src="<%$right_url%>"></iframe>
+                  </td>
+                </tr>
+              </table>
+        </td></tr></table>  
+      
+      
+      </td>
+</tr>
+
+<tr ><td class=celltd height=30> </td><td class=celltd colspan="2">
+<%if $canedit%>
+<input name='playlistid' type='hidden' id='playlistid' value='<%$rs.playlistid%>' ><input name='controller' type='hidden' id='controller' value='<%$controller%>' ><input name='action' type='hidden' id='action' value='<%$action%>' ><input name='referer' type='hidden' id='referer' value='<%$referer%>' > <input id=submitbtn type='submit' tabindex="0" class='button' value='提交' onClick="isclicksubmit=true;this.disabled='true';this.form.submit()">
+			<input name='back' type='button' class='button' value='取消' onClick="window.location.href='<%url_helper type='action' param1=$controller param2='list'%>'">
+<%else%>
+<input name='back' type='button' class='button' value='返回' onClick="window.location.href='<%url_helper type='action' param1=$controller param2='list'%>'">
+<%/if%>
+            </td>
+</tr>
+</form></table>
+
+</BODY>
+</HTML>

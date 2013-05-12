@@ -1,0 +1,19 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><?=$site_title?> - <?=$page_title?></title>
+<link rel="stylesheet" type="text/css" href="ui/xtree.css">
+</head>
+<script>
+function show_tree(tree_id)
+{
+   if(document.all("xtree"+tree_id).style.display=="none")
+      document.all("xtree"+tree_id).style.display="";
+   else
+      document.all("xtree"+tree_id).style.display="none"
+}
+</script>
+<body topmargin="3" leftmargin="5" rightMargin="0" bgcolor="#F7FCF3" marginwidth="0" marginheight="0" class=bodycolor>
+<div id="xtree1" class="xtree" XmlSrc="<?=$treeview_url?>"></div>
+</body>
+</html>

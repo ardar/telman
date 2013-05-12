@@ -1,0 +1,17 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<title>Head</title>
+</head>
+<body><table width="100%" border="0" cellspacing="0" cellpadding="0" height="50px">
+  <tr style="background-image: url(images/pagetitlebk.png); vertical-align:top; text-align:left;">
+    <td></td>
+    <td width=50% style="text-align:right; vertical-align:bottom; padding:8px; padding-right:25px; ">
+    <!--a style="color:white;padding-left:10px" >已登录为: [<%$groupname%>]<%$username%> </a-->
+    <a style="color:white;padding-left:10px" target="frame_main" href='<%url_helper type='action' param1='Account' param2='profile'%>'><img src="images/profile.png" > 个人资料</a>
+    <a style="color:white;padding-left:10px" href='<%url_helper type='action' param1='Account' param2='logout'%>'><img src="images/logout.png" > 注销登录</a></td>
+  </tr>
+</table>
+</body>
+</html>

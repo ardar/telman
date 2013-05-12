@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<TreeNode id="<%$root.id%>" text="<%$root.text%>" icon="<%$root.image%>" iconopen="<%$root.image%>" url="<%$root.href%>" target="<%$root.target%>" 
+	subnodelink="<%$root.xml%>">
+	<%foreach $list as $rs%>
+<TreeNode id="<%$rs.id%>" text="<%$rs.text%>" icon="<%$rs.image%>" iconopen="<%$rs.image%>" url="<%$rs.href%>" target="<%$rs.target%>" 
+<%if $rs.xml<>""%>subnodelink="<%$rs.xml%>"<%/if%> <%if $rs.hover<>""%>hover="<%$rs.hover%>"<%/if%> clickjs="<%$rs.clickjs%>" dbclickjs="alert('dbclick')">
+	</TreeNode>
+	<%/foreach%>
+</TreeNode>

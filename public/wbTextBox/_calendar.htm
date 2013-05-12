@@ -1,0 +1,238 @@
+<? 
+$year=date('Y');
+$month = intval(date('m'));
+$date = intval(date('d'));
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+	<HEAD>
+		<title>日历</title>
+		<META http-equiv="Content-Type" content="text/html; charset=gb2312">
+		<meta name="GENERATOR" Content="Microsoft Visual Studio .NET 7.1">
+		<meta name="CODE_LANGUAGE" Content="C#">
+		<meta name="vs_defaultClientScript" content="JavaScript">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+		<META http-equiv="Pragma" content="no-cache">
+		<META http-equiv="Cache-Control" content="no-cache">
+		<META http-equiv="Expires" content="0">
+		<LINK href="wbTextBox/calendar.css" type="text/css" rel="stylesheet">
+<script language="JavaScript">
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+
+function doCal()
+{
+  n=new Date();
+  cm="<?=$month?>";
+  n.setFullYear("<?=$year?>");
+  n.setMonth(cm-1);
+
+  writeMonth(n);
+}
+
+function set_year(op)
+{
+  if(op==-1 && document.form1.YEAR.selectedIndex==0)
+     return;
+  if(op==1 && document.form1.YEAR.selectedIndex==(document.form1.YEAR.options.length-1))
+     return;
+
+  document.form1.YEAR.selectedIndex=document.form1.YEAR.selectedIndex+op;
+
+  yr=document.form1.YEAR.value;
+  cm=document.form1.MONTH.value;
+  doOther(yr,cm);
+}
+
+function set_mon(op)
+{
+  if(op==-1 && document.form1.MONTH.selectedIndex==0)
+     return;
+  if(op==1 && document.form1.MONTH.selectedIndex==(document.form1.MONTH.options.length-1))
+     return;
+
+  document.form1.MONTH.selectedIndex=document.form1.MONTH.selectedIndex+op;
+
+  yr=document.form1.YEAR.value;
+  cm=document.form1.MONTH.value;
+  doOther(yr,cm);
+}
+
+function doOther(yr,cm)
+{
+  n=new Date();
+  n.setFullYear(yr);
+  n.setDate(1);
+  n.setMonth(cm-1);
+  writeMonth(n);
+}
+
+function writeMonth(n)
+{
+  yr=document.form1.YEAR.value;
+  cm=document.form1.MONTH.value;
+  n.setDate(1);dow=n.getDay();moy=n.getMonth();
+
+  for (i=0;i<41;i++)
+  {
+    if ((i<dow)||(moy!=n.getMonth()))
+       dt="&nbsp;";
+    else
+    {
+      dt=n.getDate();
+      n.setDate(n.getDate()+1);
+
+      if(dt==<?=$date?>&&cm==<?=$month?>&&yr==<?=$year?>)
+         dt="<a href='#' onclick='dateClick("+dt+")'><font color=red>"+dt+"</font></a>";
+      else
+         dt="<a href='#' onclick='dateClick("+dt+")'>"+dt+"</a>";
+    }
+
+    MM_findObj('day')[i].innerHTML="<b>"+dt+"</b>";
+  }
+}
+
+function setPointer(theRow, thePointerColor)
+{
+   theRow.bgColor = thePointerColor;
+}
+
+var parent_window = window.dialogArguments;
+
+function dateClick(theDate)
+{
+   yr=document.form1.YEAR.value;
+   cm=document.form1.MONTH.value;
+
+   if(theDate<10)
+      theDate="0"+theDate;
+   date_str=yr+"-"+cm+"-"+theDate;
+   
+   date_time=parent_window.document.<?=$_REQUEST["fieldname"]?>.value;
+   var len=date_time.indexOf(" ");
+   if(len<=0)
+      parent_window.document.<?=$_REQUEST["fieldname"]?>.value=date_str;
+   else
+      parent_window.document.<?=$_REQUEST["fieldname"]?>.value=date_str+date_time.substr(len);
+   window.close();
+}
+
+function thisMonth()
+{
+   document.form1.YEAR.selectedIndex=(<?=$year?>-1930);
+   document.form1.MONTH.selectedIndex=(<?=$month?>-1);
+   doCal();
+}
+</script>
+</head>
+
+<body class="bodycolor" onload="doCal();" topmargin="0" leftmargin="0">
+<form action="#"  method="post" name="form1">
+<table width="100%" border="0" cellspacing="1" class="small" bgcolor="#000000" cellpadding="3" align="center">
+  <tr align="center" class="bodycolor">
+    <td colspan="7" class="big1">
+      <!-------------- 年 ------------>
+        <input type="button" value="〈" class="SmallButton" title="上一年" onclick="set_year(-1);"><select name="YEAR" class="SmallSelect" onchange="set_year(0);">
+        <? for($i=1930; $i<=2050; $i++) 
+			{
+				if($i == $year)
+					echo ("<option value='" . $i . "' selected>" .$i. "</option>");
+				else
+					echo ("<option value='" . $i . "'>" .$i. "</option>");
+			} 
+        
+        ?>
+
+        </select>
+        <input type="button" value="〉" class="SmallButton" title="下一年" onclick="set_year(1);"> <b>年</b>
+
+<!-------------- 月 ------------>
+        <input type="button" value="〈" class="SmallButton" title="上一月" onclick="set_mon(-1);"><select name="MONTH" class="SmallSelect" onchange="set_mon(0);">
+        <? for($i=1; $i<=12; $i++) 
+			{
+				if($i == month)
+					echo ("<option value='" . $i . "' selected>" . $i . "</option>");
+				else
+					echo ("<option value=\"" . $i . "\">" . $i . "</option>");
+			} 
+        
+        ?>
+         
+        </select><input type="button" value="〉" class="SmallButton" title="下一月" onclick="set_mon(1);"> <b>月</b>
+
+    </td>
+  </tr>
+  <tr align="center" class="TableHeader">
+    <td width="14%" bgcolor="#FFCCFF"><b>日</b></td>
+    <td width="14%"><b>一</b></td>
+    <td width="14%"><b>二</b></td>
+    <td width="14%"><b>三</b></td>
+    <td width="14%"><b>四</b></td>
+    <td width="14%"><b>五</b></td>
+    <td width="14%" bgcolor="#CCFFCC"><b>六</b></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF" align="center" style="cursor:hand">
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%" id="day" onmouseover="setPointer(this,'#E2E8FA')" onmouseout="setPointer(this,'')"></td>
+    <td width="14%"><a href="#" onclick="thisMonth();"><b>本月</b></a></td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>
+

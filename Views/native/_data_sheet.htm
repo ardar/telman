@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><%$pagetitle%></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<SCRIPT language=javascript>
+function unselectall()
+{
+    if(document.myform.chkAll.checked){
+	document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+    } 	
+}
+
+function CheckAll(form)
+{
+  for (var i=0;i<form.elements.length;i++)
+    {
+    var e = form.elements[i];
+    if (e.Name != "chkAll")
+       e.checked = form.chkAll.checked;
+    }
+}
+</SCRIPT>
+</head>
+
+<body>
+<table width='100%'  border=0 cellpadding=2 cellspacing=1 bgcolor='#e7e7e7' class='border'>
+<TR><TD bgcolor=#ffffff class=ftitle colspan=0><table><form id=navformi action='' method=GET><TR><TD align=left>
+<h1><%$tabletitle%>统计报表 </h1>
+<%html_select_date start_year="2005" end_year="+0" time=$cal_time display_days=false reverse_years=true%>
+<input type="hidden" name="module" value="<%$module%>" ><input type="hidden" name="proc" value="<%$proc%>">
+<input type="submit" name="submit" value="查询" class="button">
+</TD><TD><div align=right></div></TD></TR></form></table>
+</TD></TR></table>
+
+<%section name=i loop=$sheet%>
+<BR>
+<%data_table data=$sheet[i] fields=$fields[i] navbar=$navbar class="border" title=$pagetitle[i]%>
+<%/section%>
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+<table width='<%$form._width%>' border=0 cellpadding=2 cellspacing=1 bgcolor='<%$form._bgcolor%>' class='<%$form._class%>' <%$form._ext%>>
+<form id='<%$form._id%>' name='<%$form._name%>' action='' method='<%$form._method%>'  enctype='multipart/form-data'>
+<TR >
+<TD colspan=2 class=tabletitle>
+	<b><%$form._title%></b>
+</TD>
+</TR>
+<%foreach $form._fields as $field%>
+    <%if $field.type=='html'%>
+    	<%$field.body%>
+    <%else%>
+        <tr class=fieldtr <%if $form._isreadonly%>Disabled='true'<%/if%> >
+        <td class=fieldtd>
+        	<%$field.title%>
+        </td>
+        <td class=valuetd>
+        	<%$field.body%>
+        </td>
+        </tr>
+    <%/if%>
+<%/foreach%>
+<tr >
+<td height=30> </td><td>
+<%$form._hidden%>
+<%if $form._buttons<>''%>
+	<%$form._buttons%>
+<%else%>
+    <%if $form._isreadonly%>
+        <input name='back' type='button' class='button' value='返回' onclick="window.history.back()">
+    <%else%>
+        <input name='Submit' type='submit' class='button' value='提交' 
+            onclick="this.form.submit();this.disabled=true;this.value='正在提交...'">
+        <input name='reset' type='reset' class='button' value='重填'>
+        <input name='back' type='button' class='button' value='取消' onclick="window.history.back()">
+    <%/if%>
+<%/if%>
+</td>
+</tr>
+</form>
+</table>

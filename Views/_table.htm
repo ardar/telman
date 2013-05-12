@@ -1,0 +1,59 @@
+
+<%if $table._toolbar<>''%>
+<table class=toolbar><tr><td>
+<%$table._toolbar%>
+</td></tr></table>
+<%/if%>
+<table width="<%$table._width%>"  border=0 cellpadding=2 cellspacing=1 class='<%$table._class%>' <%$table.table_ext%>>
+<TR>
+<TD bgcolor=#ffffff class=tabletitle colspan="<%$table._fieldcount%>">
+    <table width=100% height=10 cellpadding=0 cellspacing=0 border=0>
+    <form id="navform_<%$table._id%>" action="" method=GET><TR><TD align=left valign=center >
+    <B><%$table._title%></B>
+    </TD>
+    <TD class="navbar">
+    <%$table._navbar%>
+    </TD></TR>
+    </form>
+	</table>
+</TD>
+</TR>
+<%if $table._headbar<>''%>
+<form id="headform_<%$table._id%>" action='' method=GET>
+<TR><TD class=headbar colspan="<%$table._fieldcount%>">
+    <%$table._headbar%>
+</TD></TR>
+ </form>
+<%/if%>
+<form id="dataform_<%$table._id%>" name=dataform method=Post>
+<tr class=tdbg>
+<%foreach $table._fields as $field%> 
+<%if $field.type<>"hidden"%>
+<td><div align='center'><%$field.title%></div></td>
+<%/if%>
+<%/foreach%>
+</tr>
+<%foreach $table._rows as $rs%>
+<tr class=celltr 
+onclick="if(this.className=='celltr_selected')this.className='celltr';else {this.className='celltr_selected';}" 
+onmouseover="if(this.className!='celltr_selected')this.className='celltr_hover';" 
+onmouseout="if(this.className!='celltr_selected')this.className='celltr';" >
+    <%foreach $table._fields as $fieldkey=>$field%> 
+	<%if $field.type<>"hidden"%>
+    <td class=celltd <%$field.ext%> ><div align="<%$field.align%>"><%$rs[$fieldkey]%></div></td>
+    <%/if%>
+    <%/foreach%>
+</tr>
+<%/foreach%>
+<%$table._hidden%>
+<%if $table._footer<>''%>
+<TR> 
+<TD class=footbar colspan="<%$table._fieldcount%>">
+    <%$table._footer%>
+</TD></TR>
+</form>
+<%/if%>
+<TR>
+<TD class=pager colspan="<%$table._fieldcount%>">
+<%$table._pager%></TD></TR>
+</table>

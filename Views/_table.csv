@@ -1,0 +1,6 @@
+<%foreach $fields as $field%><%if $field.type<>"hidden"%><%$field.title%>,<%/if%><%/foreach%>
+
+<%foreach $rows as $rs%>
+<%foreach $fields as $fieldkey=>$field%><%if $field.type<>"hidden"%><%$rs[$fieldkey]%>,<%/if%><%/foreach%>
+
+<%/foreach%>

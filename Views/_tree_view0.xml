@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<TreeNode>
+	<%if $root<>""%>
+	<TreeNode id="<%$root.id%>" text="<%$root.text%>" img_src="<%$root.image%>" href="<%$root.href%>" title="<%$root.title%>" target="<%$root.target%>" 
+	>
+	<%/if%>
+	<%foreach $list as $rs%>
+<TreeNode id="<%$rs.id%>" text="<%$rs.text%>" img_src="<%$rs.image%>" href="<%$rs.href%>" title="<%$rs.title%>" target="<%$rs.target%>" 
+<%if $rs.xml<>""%>Xml="<%$rs.xml%>"<%/if%>
+	>
+	</TreeNode>
+	<%/foreach%>
+	<%if $root<>""%>
+	</TreeNode>
+	<%/if%>
+</TreeNode>

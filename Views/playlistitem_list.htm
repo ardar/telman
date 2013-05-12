@@ -1,0 +1,148 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<script type='text/javascript'>
+function SelectItemMedia(itemid)
+{
+	var imgid = "textimg_"+itemid;
+	var fieldId = "mediaid_"+itemid;
+	var btnid = "delbtn_"+itemid;
+	var val = showModalDialog("index.php?controller=Media&action=selindex&mediatype=image&return_field="+fieldId, "从媒体库中选择", "dialogWidth:800px; dialogHeight:600px; status:0; help:0");
+	if(val)
+	{
+		var arr = val.split('*');
+		var mediaid = arr[0];
+		var medianame = arr[1];
+		var mediapath = arr[2];
+		var item = window.document.getElementById(fieldId);
+		if(item!=null)
+		{
+			item.value = mediaid;
+		}
+		window.document.getElementById(imgid).src = mediapath;
+		window.document.getElementById(btnid).style.display = '';
+		SetDirty();
+	}
+}
+function DeleteItemMedia(itemid)
+{
+	var imgid = "textimg_"+itemid;
+	var fieldId = "mediaid_"+itemid;
+	var btnid = "delbtn_"+itemid;
+	var item = window.document.getElementById(fieldId);
+	if(item!=null)
+	{
+		item.value = '';
+	}
+	window.document.getElementById(imgid).src = "images/nopic.gif";
+	window.document.getElementById(btnid).style.display = 'none';
+	SetDirty();
+}
+
+function AddNullItem()
+{
+	window.document.getElementById('mediaid').value = '-99';
+	window.document.forms['addtozone_form'].submit();
+}
+
+var ListIsDirty = false;
+function SetDirty()
+{
+	var item = window.document.getElementById("dirty_note");
+	item.style.display = "";
+	ListIsDirty = true;
+}
+function CheckDirty()
+{
+	if(ListIsDirty)
+	{
+		if(confirm("列表内容已修改, 是否放弃修改并进行其他操作"))
+		{
+			return true;
+			//window.document.forms['dataform'].submit();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return !ListIsDirty;
+}
+</script>
+</head>
+
+<body style="margin:3px;">
+<%if $zone.type=='video'%>
+<div style="width:100%; margin:5px"><%$zone.zonename%> (<%$zone.totalduration%>)</div>
+<table width='100%'  border=0 cellpadding=3 cellspacing=1 bgcolor='#cccccc' >
+<form id=dataform name=dataform method=Post>
+<tr  bgcolor="#efefef">
+  <td width='5%'><div align='center'>顺序</div></td>
+<td width=''><div align='center'>预览</div></td>
+<td width='50%'><div align='center'>媒体名称</div></td>
+<td width=''><div align='center'>播放时间</div></td>
+<td width=''><div align='center'>大小</div></td>
+<td width=''><div align='center'>操作</div></td>
+</tr>
+<%foreach $list as $rs%>
+<tr bgcolor="#ffffff">
+  <td width=''><div align='center'><%$rs.playorder%></div></td>
+<td width=''><div align='left'><%$rs.preview%></div></td>
+<td width=''><div align='left'><%$rs.medianame%></div></td>
+<td width=''><div align='center'><%$rs.duration%></div></td>
+<td width=''><div align='center'><%$rs.filesize%></div></td>
+<td width=''><div align='center'><%$rs.cp%></div></td>
+</tr>
+<%foreachelse%>
+<TR bgcolor=#ffffff><TD colspan=6 align=center height=50>该区域还没有加入媒体..</TD></TR>
+<%/foreach%>
+<TR bgcolor=#ffffff><TD colspan=6></TD></TR>
+</form>
+</table>
+<%elseif $zone.type=='text'%>
+<form id=dataform name=dataform method=Post>
+<div style="width:100%; margin:5px"><table width=100%><tr><td><%$zone.zonename%> </td><td align=right><span id="dirty_note" style="display:none; color:red">列表内容已修改, 进行其他操作前请先提交修改! </span> 
+<input type="submit" value="提交修改" class=button>
+<input type="button" value="添加空白项" class=button onClick="AddNullItem();">
+ </td></tr></table></div>
+<table width='100%'  border=0 cellpadding=3 cellspacing=1 bgcolor='#cccccc' >
+<tr  bgcolor="#efefef">
+  <td width='5%'><div align='center'>顺序</div></td>
+<td width=''><div align='center'>配图</div></td>
+<td width='50%'><div align='center'>文字</div></td>
+<td width=''><div align='center'>操作</div></td>
+</tr>
+<%foreach $list as $rs%>
+<tr bgcolor="#ffffff">
+  <td width=''><div align='center'><%$rs.playorder%></div></td>
+<td width=''><div align='center'><img title="点击重新选择图片" onload="if(this.width>60)this.width=60;if(this.height>60)this.height=60;" id="textimg_<%$rs.playlistitemid%>" src="<%if $rs.savefilepath<>''%><%$rs.savefilepath%><%else%>images/nopic.gif<%/if%>" style="cursor:hand" onClick="SelectItemMedia(<%$rs.playlistitemid%>)">
+<img title="点击删除图片" <%if $rs.savefilepath==""%> style="display:none" <%/if%> id="delbtn_<%$rs.playlistitemid%>" src="images/delete.gif" style="cursor:hand" onclick="DeleteItemMedia(<%$rs.playlistitemid%>)">
+<input type="hidden" id="mediaid_<%$rs.playlistitemid%>" name="mediaid[<%$rs.playlistitemid%>]" value="<%$rs.mediaid%>"></div></td>
+<td width=''><div align='center'><textarea onChange="SetDirty();" style="width:100%" rows="3" name="text[<%$rs.playlistitemid%>]" class=border><%$rs.text%></textarea></div></td>
+<td width=''><div align='center'><%$rs.cp%></div></td>
+</tr>
+<%foreachelse%>
+<TR bgcolor=#ffffff><TD colspan=5 align=center height=50>该区域还没有加入滚动文件内容..</TD></TR>
+<%/foreach%>
+<TR bgcolor=#ffffff><TD colspan=5></TD></TR>
+</table>
+<input type="hidden" name="controller" value="PlaylistItem">
+<input type="hidden" name="action" value="editlist">
+</form>
+<%elseif $zone.type=="html"%>
+<div style="width:100%; margin:5px"><%$zone.zonename%> </div>
+<%/if%>
+<div>
+<form id=addtozone_form name=dataform method=Post>
+<input type='hidden' id='zoneid' name='zoneid' value='<%$zone.zoneid%>'/>
+<input type='hidden' id='mediaid' name='mediaid' value=''/>
+    <input type="hidden" name='controller' value='PlaylistItem'>
+    <input type="hidden" name='action' value='addtozone'>
+</form>
+</div>
+</BODY>
+</HTML>

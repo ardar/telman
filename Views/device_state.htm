@@ -1,0 +1,167 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript src="ui/common.js">
+</SCRIPT>
+<SCRIPT language=javascript src="ui/monitor.js">
+</SCRIPT>
+</head>
+
+<body>
+<%if $rs.deviceid>0%>
+<table width='100%'  border=0 cellpadding=3 cellspacing=1 bgcolor='#e7e7e7' class='data_form'>
+      <tr class=title >
+        <td class=tabletitle colspan=4><b>设备状态 (<%$rs.devicetypename%>)  ID: <%$rs.deviceid%></b></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td width="20%" class=fieldtd>ID</td>
+        <td width="30%" class=celltd> <%$rs.deviceid%></td>
+        <td width="50%" class=celltd colspan="2" rowspan="9" align="center" valign="middle" style="overflow:hidden">
+        
+        <img src="<%if $rs.screen_image<>''%><%$rs.screen_image%><%else%>images/nopic.png<%/if%>" name="device_image" id="device_image" style="border: solid 1px gray" onload="if(this.width>300)this.width=300;if(this.height>300)this.height=300;">
+        
+        </td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>设备名</td>
+        <td class=celltd><%$rs.devicename%> </td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>MAC地址</td>
+        <td class=celltd><%$rs.devicemac%></td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>中继路径</td>
+        <td class=celltd><%$rs.parentpath%></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>所属逻辑组</td>
+        <td class=celltd><%$rs.logicalgroupname%></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>IP地址</td>
+        <td class=celltd><%$rs.deviceip%></td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>是否启用</td>
+        <td class=celltd><%$rs.deviceisactive%></td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>开机状态</td>
+        <td class=celltd><span id=st_status>
+        <%if $rs.st_status==1%>已开机
+        <%else%>已关机
+        <%/if%> 
+        </span> </td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>屏幕状态</td>
+        <td class=celltd><span id=st_screenstate>
+        <%if $rs.st_screenstate==1%>开启
+        <%else%>关闭
+        <%/if%>
+        </span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>最后连接时间</td>
+        <td class=celltd><%$rs.st_lastbeattime|formatdatetime%></td>
+        <td class=fieldtd width=100>最后断开时间</td>
+        <td class=celltd><%$rs.st_lastdisconntime|formatdatetime%></td>
+        </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>最后启动时间</td>
+        <td class=celltd><%$rs.st_lastboottime|formatdatetime%></td>
+        <td class=fieldtd>最后更新时间</td>
+        <td class=celltd><%$rs.st_lastupdatetime|formatdatetime%></td>
+  </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>重启次数</td>
+        <td class=celltd><%$rs.st_reboottimes%></td>
+        <td class=fieldtd>重连次数</td>
+        <td class=celltd><%$rs.st_reconntimes%></td>
+  </tr>
+        <%if $rs.devicetype=='terminal'%>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>磁盘总量</td>
+        <td class=celltd><span id=st_disktotal><%$st.disktotal%></span></td>
+        <td class=fieldtd style="width:20%" align="left" valign="middle">CPU Nice</td>
+        <td class=celltd style="width:30%" align="left" valign="middle"><span id=st_cpunice><%$st.cpunice%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>磁盘已使用</td>
+        <td class=celltd><span id=st_diskuse><%$st.diskuse%></span></td>
+        <td class=fieldtd width="50%" align="left" valign="middle">CPU System</td>
+        <td class=celltd width="50%" align="left" valign="middle"><span id=st_cpusystem><%$st.cpusystem%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>磁盘空余</td>
+        <td class=celltd><span id=st_diskfree><%$st.diskfree%></span></td>
+        <td class=fieldtd align="left" valign="middle">CPU Idle</td>
+        <td class=celltd align="left" valign="middle"><span id=st_cpuidle><%$st.cpuidle%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>内存总量</td>
+        <td class=celltd><span id=st_memtotalmem><%$st.memtotalmem%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程Pri</td>
+        <td class=celltd align="left" valign="middle"><span id=st_procpri><%$st.procpri%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>内存空余</td>
+        <td class=celltd><span id=st_memfreemem><%$st.memfreemem%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程Nice</td>
+        <td class=celltd align="left" valign="middle"><span id=st_procnice><%$st.procnice%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>内存缓冲区</td>
+        <td class=celltd><span id=st_membuffers><%$st.membuffers%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程Size</td>
+        <td class=celltd align="left" valign="middle"><span id=st_procsize><%$st.procsize%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>内存Cached</td>
+        <td class=celltd><span id=st_memcached><%$st.memcached%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程Rss</td>
+        <td class=celltd align="left" valign="middle"><span id=st_procrss><%$st.procrss%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>SWAP总量</td>
+        <td class=celltd><span id=st_memtotalswap><%$st.memtotalswap%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程State</td>
+        <td class=celltd align="left" valign="middle"><span id=st_procstate><%$st.procstate%></span></td>
+      </tr>
+      <tr bgcolor=#ffffff>
+        <td class=fieldtd>SWAP空余</td>
+        <td class=celltd><span id=st_memfreeswap><%$st.memfreeswap%></span></td>
+        <td class=fieldtd align="left" valign="middle">进程Time</td>
+        <td class=celltd align="left" valign="middle"><span id=st_proctime><%$st.proctime%></span></td>
+      </tr>
+      <%/if%>
+      <tr >
+        <td class=celltd height=30></td>
+        <td class=celltd colspan="3">
+          <a onClick="javascript:window.history.back()" class="button" > 返回上页 </a>
+          <a href="<%url_helper type='action' param1='FWLog' param2='devicelist' param3='&sourceid=' param4=$rs.deviceid%>" target='_blank' class="button" > 查看日志 </a>
+          <%if $canop%>
+          <a  href="javascript:"  onclick="UpdateSchedule('<%$rs.deviceid%>',0);" class="button" > 更新节目 </a>
+          <%/if%>
+          <%if $rs.devicetype=='terminal'%>
+          	<a href="javascript:" onClick="UpdateDeviceThumbnail('<%$rs.deviceid%>','device_image');" class="button" > 获取截图 </a>
+            <%if $canop%>
+          	<a href="javascript:"  onclick="UpdateDeviceState('<%$rs.deviceid%>');" class="button" > 获取状态 </a>
+          	
+          		<a id=btn_openscreen href="javascript:"  onclick="CloseScreen('<%$rs.deviceid%>',1);" class="button" > 开启屏幕 </a>
+          	
+          		<a id=btn_closescreen href="javascript:"  onclick="CloseScreen('<%$rs.deviceid%>',0);" class="button" > 关闭屏幕 </a>
+          	
+          	<a href="javascript:"  onclick="CloseScreen('<%$rs.deviceid%>',2);" class="button" > 重启 </a>
+          	<a href="javascript:"  onclick="CloseScreen('<%$rs.deviceid%>',3);" class="button" > 关机 </a>
+            <%/if%>
+          <%/if%></td>
+        </tr>
+    </table>
+<%/if%>
+<%$table%>
+</BODY>
+</HTML>

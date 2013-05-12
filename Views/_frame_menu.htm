@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK href="style.css" type=text/css rel=stylesheet>
+<title>Menu</title>
+</head>
+<body>
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" class=menu_table>
+<tr class="tdbg">
+<td><div align="center"><%$groupname%></div></td>
+</tr>
+<tr class="">
+<td><div align="center"><%$username%></div></td>
+</tr>
+<%section name=i loop=$roots%>
+		<!-- <table width="100%"  border="0" cellpadding="2" cellspacing="1" class="title"> -->
+		<tr class="menutitle" >
+		<td><div align="left">
+		 <b><span onClick="if(item<%$roots[i].menuid%>.style.display=='none') item<%$roots[i].menuid%>.style.display=''; else item<%$roots[i].menuid%>.style.display='none';" title="点击展开">
+         <%if $roots[i].image%>
+         <IMG SRC="images/menu/<%$roots[i].image%>" BORDER="0">
+         <%else%>
+         <IMG SRC="images/menu/default.png" BORDER="0">
+         <%/if%> 
+         <%$roots[i].title%></span></b></div></td>
+		</tr>
+		<tbody id="item<%$roots[i].menuid%>" <%if $roots[i].showflag==0%>style="display:none"<%/if%>>
+		<%section name=j loop=$roots[i].subs%>
+		<tr>
+		<td align="center" class="menuitem" onMouseOver="this.className='menuitem_hover'" onMouseOut="this.className='menuitem'">
+        <div style="width:80px; text-align:left;"><a href="<%$roots[i].subs[j].url%>" style="display:block" target="frame_main">
+        <%if $roots[i].subs[j].image%>
+         <IMG SRC="images/menu/<%$roots[i].subs[j].image%>" BORDER="0">
+         <%else%>
+         <IMG SRC="images/menu/default.png" BORDER="0">
+         <%/if%> 
+         <%$roots[i].subs[j].title%>
+         </a></div>
+         </td>
+		</tr>
+		<%/section%>
+		</tbody>
+		<tr >
+		<td height=3 align="center"></td>
+		</tr>
+<%/section%>
+		<tr class=tdbg>
+		<td align="center"> <div></div>
+</td>
+		</tr>
+</table>
+</body>
+</html>
